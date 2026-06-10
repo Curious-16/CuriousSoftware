@@ -1,0 +1,331 @@
+/* ===============================
+   REFERENCE ANALYSIS PAGE
+================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.reference-analysis-container {
+  min-height: 100vh;
+  padding: 30px;
+  background: #f4f7fc;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===============================
+   HEADER
+================================ */
+
+.analysis-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.analysis-header h1 {
+  color: #0f4cbd;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.analysis-header p {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* ===============================
+   CANDIDATE DETAILS CARD
+================================ */
+
+.candidate-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.candidate-card h2 {
+  color: #0f4cbd;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  );
+  gap: 15px;
+}
+
+.detail-box {
+  background: #f8fbff;
+  border-left: 5px solid #0f4cbd;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.detail-box label {
+  display: block;
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.detail-box span {
+  color: #111827;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* ===============================
+   TOTAL SUBMISSION CARD
+================================ */
+
+.total-submission-card {
+  background: linear-gradient(
+    135deg,
+    #dfe4ee,
+    #ecedf0
+  );
+  color: white;
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 25px;
+  text-align: center;
+  box-shadow: 0 6px 20px
+    rgba(37, 99, 235, 0.25);
+}
+
+.total-submission-card h2 {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.total-submission-card p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* ===============================
+   TABLE SECTION
+================================ */
+
+.table-section {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  overflow-x: auto;
+  box-shadow: 0 4px 15px
+    rgba(0, 0, 0, 0.08);
+}
+
+.table-title {
+  color: #0f4cbd;
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.analysis-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.analysis-table thead {
+  background: #0f4cbd;
+}
+
+.analysis-table thead th {
+  color: white;
+  padding: 14px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.analysis-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+  transition: 0.3s;
+}
+
+.analysis-table tbody tr:hover {
+  background: #f1f5ff;
+}
+
+.analysis-table td {
+  padding: 14px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.no-data {
+  text-align: center;
+  padding: 25px;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+/* ===============================
+   LOADING
+================================ */
+
+.loading-container {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-text {
+  color: #0f4cbd;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 992px) {
+  .analysis-header h1 {
+    font-size: 28px;
+  }
+
+  .total-submission-card h2 {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .reference-analysis-container {
+    padding: 15px;
+  }
+
+  .candidate-card {
+    padding: 18px;
+  }
+
+  .analysis-table th,
+  .analysis-table td {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .total-submission-card h2 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .analysis-header h1 {
+    font-size: 24px;
+  }
+
+  .candidate-card h2 {
+    font-size: 20px;
+  }
+
+  .table-title {
+    font-size: 18px;
+  }
+}
+/* BACK BUTTON */
+
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 999;
+  background: #0f4cdb;
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 15px rgba(15, 76, 219, 0.3);
+}
+
+.back-btn:hover {
+  background: #0b3db5;
+  transform: translateY(-2px);
+}
+
+.back-btn:active {
+  transform: scale(0.98);
+}
+/* Smooth Page Animation */
+
+.reference-analysis-container {
+  animation: fadeInPage 0.45s ease-in-out;
+}
+
+@keyframes fadeInPage {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Back Button */
+
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: #0f4cdb;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #0a3bb0;
+  transform: translateY(-2px);
+}
+
+.back-btn:active {
+  transform: scale(0.98);
+}
+
+/* Responsive Table */
+
+.table-responsive {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.analysis-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.clear-btn {
+  background: #e74c3c;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.clear-btn:hover {
+  background: #c0392b;
+}

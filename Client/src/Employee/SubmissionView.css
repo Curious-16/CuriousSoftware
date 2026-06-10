@@ -1,0 +1,411 @@
+/* ===== GOOGLE FONT ===== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: "Poppins", sans-serif;
+  background: #0f172a;
+}
+
+/* =====================================================
+   MAIN DASHBOARD
+===================================================== */
+
+.analysis-dashboard{
+  display: flex;
+  min-height: 100vh;
+  background: #0f172a;
+}
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.analysis-sidebar{
+  width: 260px;
+  background: #111827;
+  padding: 30px 20px;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  z-index: 1000;
+}
+
+.analysis-logo{
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 45px;
+  color: #3b82f6;
+}
+
+.analysis-menu{
+  list-style: none;
+}
+
+.analysis-menu li{
+  padding: 15px 18px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.analysis-menu li:hover{
+  background: #2563eb;
+  transform: translateX(5px);
+}
+
+.analysis-menu .active{
+  background: #2563eb;
+  color: white;
+}
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.analysis-content{
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  padding: 35px;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.analysis-header{
+  margin-bottom: 35px;
+}
+
+.analysis-header h1{
+  color: white;
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.analysis-header p{
+  color: #94a3b8;
+  font-size: 15px;
+}
+
+/* =====================================================
+   ANALYSIS CARDS
+===================================================== */
+
+.analysis-cards{
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+  gap: 22px;
+  margin-bottom: 35px;
+}
+
+.analysis-card{
+  background: white;
+  padding: 28px;
+  border-radius: 22px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+  transition: 0.3s;
+}
+
+.analysis-card:hover{
+  transform: translateY(-6px);
+}
+
+.analysis-card h2{
+  font-size: 16px;
+  color: #64748b;
+  margin-bottom: 14px;
+}
+
+.analysis-card h3{
+  font-size: 34px;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.analysis-card span{
+  font-size: 14px;
+  color: #22c55e;
+  font-weight: 600;
+}
+
+/* =====================================================
+   CHART GRID
+===================================================== */
+
+.chart-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(350px,1fr));
+  gap: 25px;
+  margin-bottom: 35px;
+}
+
+/* =====================================================
+   CHART CARD
+===================================================== */
+
+.chart-card{
+  background: white;
+  padding: 28px;
+  border-radius: 22px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+}
+
+.chart-card h2{
+  margin-bottom: 30px;
+  color: #0f172a;
+  font-size: 20px;
+}
+
+/* =====================================================
+   BAR CHART
+===================================================== */
+
+.bar-chart{
+  height: 260px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 15px;
+  padding-top: 20px;
+}
+
+.bar{
+  flex: 1;
+  min-width: 45px;
+  background: linear-gradient(
+    to top,
+    #2563eb,
+    #60a5fa
+  );
+  border-radius: 14px 14px 0 0;
+  position: relative;
+  transition: 0.3s;
+}
+
+.bar:hover{
+  opacity: 0.85;
+  transform: scaleY(1.03);
+}
+
+.bar span{
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: #475569;
+  font-weight: 500;
+}
+
+/* =====================================================
+   PROGRESS CIRCLE
+===================================================== */
+
+.progress-circle{
+  width: 220px;
+  height: 220px;
+  margin: auto;
+  border-radius: 50%;
+  background:
+    conic-gradient(
+      #2563eb 0% 82%,
+      #e2e8f0 82% 100%
+    );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle-inner{
+  width: 160px;
+  height: 160px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle-inner h3{
+  font-size: 34px;
+  color: #0f172a;
+}
+
+.circle-inner p{
+  color: #64748b;
+  margin-top: 5px;
+}
+
+/* =====================================================
+   DETAILS CARD
+===================================================== */
+
+.submission-details-card{
+  background: white;
+  padding: 30px;
+  border-radius: 22px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+}
+
+/* =====================================================
+   DETAILS TITLE
+===================================================== */
+
+.details-title{
+  font-size: 24px;
+  color: #0f172a;
+  margin-bottom: 28px;
+}
+
+/* =====================================================
+   HORIZONTAL DETAILS
+===================================================== */
+
+.horizontal-details{
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  gap: 22px;
+}
+
+/* =====================================================
+   HORIZONTAL CARD
+===================================================== */
+
+.horizontal-card{
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 22px;
+  transition: 0.3s;
+}
+
+.horizontal-card:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.horizontal-card span{
+  display: block;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.horizontal-card p{
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+/* =====================================================
+   MOBILE RESPONSIVE
+===================================================== */
+
+@media(max-width:950px){
+
+  .analysis-dashboard{
+    flex-direction: column;
+  }
+
+  .analysis-sidebar{
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-right: none;
+  }
+
+  .analysis-content{
+    margin-left: 0;
+    width: 100%;
+  }
+
+}
+
+@media(max-width:768px){
+
+  .analysis-content{
+    padding: 22px;
+  }
+
+  .analysis-header h1{
+    font-size: 28px;
+  }
+
+  .analysis-cards{
+    grid-template-columns: 1fr;
+  }
+
+  .chart-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .horizontal-details{
+    grid-template-columns: 1fr;
+  }
+
+  .bar{
+    min-width: 38px;
+  }
+
+}
+
+@media(max-width:500px){
+
+  .analysis-logo{
+    font-size: 24px;
+  }
+
+  .analysis-header h1{
+    font-size: 24px;
+  }
+
+  .analysis-card{
+    padding: 22px;
+  }
+
+  .chart-card{
+    padding: 22px;
+  }
+
+  .submission-details-card{
+    padding: 22px;
+  }
+
+  .progress-circle{
+    width: 180px;
+    height: 180px;
+  }
+
+  .circle-inner{
+    width: 130px;
+    height: 130px;
+  }
+
+  .circle-inner h3{
+    font-size: 28px;
+  }
+
+}

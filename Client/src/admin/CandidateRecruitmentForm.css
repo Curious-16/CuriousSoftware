@@ -1,0 +1,191 @@
+/* ================= PAGE ================= */
+
+body {
+margin: 0;
+padding: 0;
+background: #f4f6f9;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+.recruitment-page {
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 30px 15px;
+background: #f4f6f9;
+}
+
+/* ================= TITLE ================= */
+
+.recruitment-title {
+color: #1e3a8a;
+margin-bottom: 20px;
+text-align: center;
+font-size: 28px;
+}
+
+/* ================= FORM ================= */
+
+.recruitment-page form {
+width: 100%;
+max-width: 700px;
+}
+
+/* ================= CARD ================= */
+
+.recruitment-card {
+background: #ffffff;
+border-radius: 14px;
+padding: 22px;
+margin-bottom: 20px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+/* ================= SECTION TITLE ================= */
+
+.section-title {
+margin-bottom: 15px;
+color: #111827;
+font-size: 18px;
+font-weight: 600;
+border-left: 4px solid #2563eb;
+padding-left: 10px;
+}
+
+/* ================= GRID ================= */
+
+.form-grid {
+display: grid;
+grid-template-columns: 180px 1fr;
+gap: 12px;
+margin-bottom: 12px;
+align-items: center;
+}
+
+.form-grid label {
+font-weight: 500;
+color: #374151;
+}
+
+/* ================= INPUTS ================= */
+
+.form-input {
+width: 100%;
+padding: 11px 14px;
+border: 1px solid #d1d5db;
+border-radius: 8px;
+font-size: 14px;
+background: #fff;
+color: #111827;
+}
+
+.form-input:focus {
+outline: none;
+border-color: #2563eb;
+box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+
+/* ================= REFERENCES ================= */
+
+.reference-box {
+background: #f8fafc;
+padding: 15px;
+border-radius: 10px;
+margin-top: 15px;
+border: 1px solid #e5e7eb;
+}
+
+.reference-box .form-input {
+margin-bottom: 10px;
+}
+
+/* ================= ADD REFERENCE ================= */
+
+.add-ref-btn {
+background: #10b981;
+color: white;
+border: none;
+padding: 10px 18px;
+border-radius: 8px;
+cursor: pointer;
+margin-top: 15px;
+}
+
+.add-ref-btn:hover {
+background: #059669;
+}
+
+/* ================= REMOVE REFERENCE ================= */
+
+.remove-ref-btn {
+background: #ef4444;
+color: white;
+border: none;
+padding: 10px 18px;
+border-radius: 8px;
+cursor: pointer;
+}
+
+.remove-ref-btn:hover {
+background: #dc2626;
+}
+
+/* ================= BUTTONS ================= */
+
+.bottom-btns {
+display: flex;
+gap: 15px;
+margin-top: 25px;
+}
+
+.submit-btn,
+.back-btn {
+flex: 1;
+height: 48px;
+border: none;
+border-radius: 10px;
+font-size: 15px;
+font-weight: 600;
+cursor: pointer;
+}
+
+.submit-btn {
+background: #2563eb;
+color: white;
+}
+
+.submit-btn:hover {
+background: #1e40af;
+}
+
+.back-btn {
+background: #e5e7eb;
+color: #111827;
+}
+
+.back-btn:hover {
+background: #d1d5db;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+.recruitment-page form {
+max-width: 100%;
+}
+
+.form-grid {
+grid-template-columns: 1fr;
+}
+
+.bottom-btns {
+flex-direction: column;
+}
+
+.submit-btn,
+.back-btn {
+width: 100%;
+}
+}

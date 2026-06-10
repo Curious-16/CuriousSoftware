@@ -1,0 +1,92 @@
+/* Container */
+.signup-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Card */
+.signup-container > div {
+  background: #0b1220;
+  padding: 40px 50px;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+  width: 320px;
+}
+
+/* Title */
+.signup-container h2 {
+  color: #e2e8f0;
+  margin-bottom: 25px;
+  font-weight: 500;
+}
+
+/* Input */
+.signup-container input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background: #020617;
+  color: #e2e8f0;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+/* Input focus */
+.signup-container input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.6);
+}
+
+/* Button */
+.signup-container button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #1e293b;
+  color: #e2e8f0;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Rich blue hover */
+.signup-container button:hover {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.7);
+  transform: translateY(-2px);
+}
+
+/* Active click */
+.signup-container button:active {
+  transform: scale(0.98);
+}
+
+/* Reset button variant */
+.signup-container button.reset {
+  background: #7f1d1d;
+}
+
+.signup-container button.reset:hover {
+  background: #2563eb;
+}
+
+/* Disabled */
+.signup-container button:disabled {
+  background: #334155;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Message */
+.signup-container p {
+  margin-top: 15px;
+  color: #94a3b8;
+  font-size: 14px;
+}

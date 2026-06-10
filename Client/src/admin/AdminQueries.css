@@ -1,0 +1,585 @@
+/* ===================================
+GOOGLE FONT
+=================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ===================================
+GLOBAL
+=================================== */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Inter",sans-serif;
+}
+
+body{
+  background:#eef4ff;
+  overflow-x:hidden;
+  color:#0f172a;
+}
+
+/* ===================================
+PAGE
+=================================== */
+
+.query-page{
+  min-height:100vh;
+
+  padding:35px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef4ff,
+      #f8fbff
+    );
+
+  position:relative;
+  overflow:hidden;
+}
+
+/* ===================================
+BACKGROUND EFFECT
+=================================== */
+
+.query-page::before{
+  content:"";
+
+  position:absolute;
+
+  width:450px;
+  height:450px;
+
+  border-radius:50%;
+
+  background:rgba(37,99,235,0.08);
+
+  top:-180px;
+  left:-150px;
+
+  filter:blur(20px);
+}
+
+.query-page::after{
+  content:"";
+
+  position:absolute;
+
+  width:350px;
+  height:350px;
+
+  border-radius:50%;
+
+  background:rgba(59,130,246,0.08);
+
+  bottom:-120px;
+  right:-120px;
+}
+
+/* ===================================
+HEADER
+=================================== */
+
+.query-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+
+  margin-bottom:30px;
+
+  position:relative;
+  z-index:2;
+
+  flex-wrap:wrap;
+}
+
+/* ===================================
+TITLE
+=================================== */
+
+.query-title h1{
+  font-size:38px;
+  font-weight:800;
+
+  color:#0f172a;
+
+  margin-bottom:8px;
+}
+
+.query-title p{
+  font-size:15px;
+  line-height:1.7;
+
+  color:#64748b;
+}
+
+/* ===================================
+SEARCH
+=================================== */
+
+.search-wrapper{
+  position:relative;
+  width:340px;
+  max-width:100%;
+}
+
+.search-icon{
+  position:absolute;
+
+  left:18px;
+  top:50%;
+
+  transform:translateY(-50%);
+
+  color:#94a3b8;
+}
+
+.search-box{
+  width:100%;
+  height:56px;
+
+  border:none;
+  outline:none;
+
+  border-radius:18px;
+
+  padding-left:48px;
+  padding-right:18px;
+
+  background:rgba(255,255,255,0.92);
+
+  backdrop-filter:blur(12px);
+
+  border:1px solid rgba(255,255,255,0.60);
+
+  box-shadow:
+    0 10px 30px rgba(37,99,235,0.10);
+
+  font-size:14px;
+  font-weight:500;
+
+  transition:0.35s ease;
+}
+
+.search-box::placeholder{
+  color:#94a3b8;
+}
+
+.search-box:hover{
+  transform:translateY(-2px);
+}
+
+.search-box:focus{
+  border-color:#2563eb;
+
+  box-shadow:
+    0 0 0 5px rgba(37,99,235,0.10);
+}
+
+/* ===================================
+TABLE WRAPPER
+=================================== */
+
+.query-table-wrapper{
+  width:100%;
+
+  overflow-x:auto;
+
+  padding:22px;
+
+  border-radius:28px;
+
+  background:rgba(255,255,255,0.88);
+
+  backdrop-filter:blur(16px);
+
+  border:1px solid rgba(255,255,255,0.60);
+
+  box-shadow:
+    0 20px 50px rgba(37,99,235,0.12);
+
+  position:relative;
+  z-index:2;
+}
+
+/* ===================================
+TABLE
+=================================== */
+
+.query-page table{
+  width:100%;
+  min-width:1100px;
+
+  border-collapse:separate;
+  border-spacing:0 14px;
+}
+
+/* ===================================
+HEADER
+=================================== */
+
+.query-page thead th{
+  padding:16px 18px;
+
+  text-align:left;
+
+  font-size:14px;
+  font-weight:700;
+
+  color:#f2f4f8;
+}
+
+/* ===================================
+BODY ROW
+=================================== */
+
+.query-page tbody tr{
+  background:white;
+
+  transition:0.35s ease;
+
+  box-shadow:
+    0 10px 25px rgba(15,23,42,0.04);
+
+  border-radius:20px;
+}
+
+.query-page tbody tr:hover{
+  transform:translateY(-4px);
+
+  box-shadow:
+    0 18px 35px rgba(37,99,235,0.12);
+}
+
+/* ===================================
+TABLE DATA
+=================================== */
+
+.query-page td{
+  padding:18px;
+
+  font-size:14px;
+
+  color:#334155;
+
+  vertical-align:middle;
+}
+
+.query-page tbody tr td:first-child{
+  border-top-left-radius:18px;
+  border-bottom-left-radius:18px;
+}
+
+.query-page tbody tr td:last-child{
+  border-top-right-radius:18px;
+  border-bottom-right-radius:18px;
+}
+
+/* ===================================
+USER INFO
+=================================== */
+
+.user-info{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.user-avatar{
+  width:52px;
+  height:52px;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1d4ed8
+    );
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:white;
+  font-size:24px;
+
+  box-shadow:
+    0 10px 20px rgba(37,99,235,0.20);
+
+  transition:0.35s ease;
+}
+
+.query-page tbody tr:hover .user-avatar{
+  transform:rotate(-8deg) scale(1.05);
+}
+
+.user-name{
+  font-size:15px;
+  font-weight:700;
+
+  color:#0f172a;
+
+  margin-bottom:4px;
+}
+
+.user-tag{
+  font-size:12px;
+  font-weight:600;
+
+  color:#64748b;
+}
+
+/* ===================================
+EMAIL BOX
+=================================== */
+
+.email-box{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+
+  padding:10px 14px;
+
+  border-radius:14px;
+
+  background:#eff6ff;
+
+  color:#2563eb;
+
+  font-size:13px;
+  font-weight:600;
+}
+
+/* ===================================
+QUERY MESSAGE
+=================================== */
+
+.query-message{
+  max-width:320px;
+
+  padding:14px;
+
+  border-radius:16px;
+
+  background:#f8fbff;
+
+  border:1px solid #dbeafe;
+
+  line-height:1.7;
+
+  color:#475569;
+
+  transition:0.30s ease;
+}
+
+.query-page tbody tr:hover .query-message{
+  background:white;
+}
+
+/* ===================================
+DATE BOX
+=================================== */
+
+.date-box{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+
+  padding:10px 14px;
+
+  border-radius:14px;
+
+  background:#ecfeff;
+
+  color:#0891b2;
+
+  font-size:13px;
+  font-weight:700;
+}
+
+/* ===================================
+DELETE BUTTON
+=================================== */
+
+.delete-btn{
+  border:none;
+  outline:none;
+
+  padding:12px 18px;
+
+  border-radius:14px;
+
+  background:#fee2e2;
+
+  color:#dc2626;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+
+  cursor:pointer;
+
+  font-size:13px;
+  font-weight:700;
+
+  transition:0.35s ease;
+}
+
+.delete-btn:hover{
+  transform:translateY(-3px);
+
+  background:#fecaca;
+
+  box-shadow:
+    0 12px 25px rgba(220,38,38,0.15);
+}
+
+/* ===================================
+NO DATA
+=================================== */
+
+.no-data{
+  padding:45px;
+
+  text-align:center;
+
+  color:#64748b;
+
+  font-size:15px;
+  font-weight:600;
+}
+
+/* ===================================
+BACK BUTTON
+=================================== */
+
+.bottom-back-btn{
+  margin-top:26px;
+
+  height:56px;
+
+  border:none;
+  border-radius:18px;
+
+  padding:0 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1d4ed8
+    );
+
+  color:white;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+
+  font-size:15px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:0.35s ease;
+
+  box-shadow:
+    0 12px 25px rgba(37,99,235,0.25);
+}
+
+.bottom-back-btn:hover{
+  transform:translateY(-4px);
+
+  box-shadow:
+    0 20px 40px rgba(37,99,235,0.35);
+
+  background:
+    linear-gradient(
+      135deg,
+      #1d4ed8,
+      #1e40af
+    );
+}
+
+/* ===================================
+SCROLLBAR
+=================================== */
+
+.query-table-wrapper::-webkit-scrollbar{
+  height:8px;
+}
+
+.query-table-wrapper::-webkit-scrollbar-thumb{
+  background:#2563eb;
+  border-radius:20px;
+}
+
+.query-table-wrapper::-webkit-scrollbar-track{
+  background:#dbeafe;
+}
+
+/* ===================================
+RESPONSIVE
+=================================== */
+
+@media(max-width:900px){
+
+  .query-page{
+    padding:20px;
+  }
+
+  .query-header{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .search-wrapper{
+    width:100%;
+  }
+
+  .query-title h1{
+    font-size:30px;
+  }
+}
+
+@media(max-width:600px){
+
+  .query-page{
+    padding:15px;
+  }
+
+  .query-table-wrapper{
+    padding:14px;
+    border-radius:22px;
+  }
+
+  .query-title h1{
+    font-size:24px;
+  }
+
+  .query-title p{
+    font-size:13px;
+  }
+
+  .query-page th,
+  .query-page td{
+    padding:14px;
+    font-size:13px;
+  }
+
+  .bottom-back-btn{
+    width:100%;
+  }
+
+  .query-message{
+    max-width:240px;
+  }
+}

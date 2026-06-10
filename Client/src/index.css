@@ -1,0 +1,124 @@
+
+/* =========================
+   ROOT VARIABLES (LIGHT ONLY)
+========================= */
+
+
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #ffffff;
+  --border: #e5e4e7;
+  --code-bg: #f4f3ec;
+  --accent: #2563eb;
+  --accent-bg: rgba(37, 99, 235, 0.1);
+  --accent-border: rgba(37, 99, 235, 0.4);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+
+  /* FORCE LIGHT MODE */
+  color: var(--text);
+  background: #ffffff;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================
+   GLOBAL RESET FIX
+========================= */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffff !important; /* 🚨 FIX BLACK BACKGROUND */
+  color: #111827;
+}
+
+/* =========================
+   ROOT WRAPPER
+========================= */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  text-align: center;
+
+  border-inline: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  background: #ffffff !important; /* 🚨 FIX */
+}
+
+/* =========================
+   TYPOGRAPHY
+========================= */
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 48px;
+  margin: 32px 0;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+p {
+  margin: 0;
+  color: #374151;
+}
+
+/* =========================
+   CODE BLOCK
+========================= */
+code {
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--code-bg);
+  color: var(--text-h);
+}
+
+/* =========================
+   TABLE FIX GLOBAL SAFETY
+========================= */
+table {
+  border-collapse: collapse;
+}
+
+th, td {
+  color: #111827;
+}
+
+/* =========================
+   REMOVE DARK MODE COMPLETELY
+========================= */
+
+/* ❌ DELETE DARK MODE AUTO SWITCH */
+/*
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16171d;
+    --text: #9ca3af;
+  }
+}
+*/

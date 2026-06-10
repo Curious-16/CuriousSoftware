@@ -1,0 +1,570 @@
+/* ================= GOOGLE FONT ================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ================= GLOBAL ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Inter",sans-serif;
+}
+
+body{
+  background:#eef4ff;
+  color:#0f172a;
+}
+
+/* ================= MAIN PAGE ================= */
+
+.home{
+  min-height:100vh;
+
+  background:
+    radial-gradient(circle at top left,#dbeafe,#eef4ff 45%);
+
+  overflow:hidden;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+  width:100%;
+  height:85px;
+
+  padding:0 60px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  background:rgba(255,255,255,0.75);
+
+  backdrop-filter:blur(14px);
+
+  border-bottom:1px solid rgba(255,255,255,0.5);
+
+  position:sticky;
+  top:0;
+  z-index:100;
+
+  box-shadow:
+    0 6px 20px rgba(15,23,42,0.05);
+}
+
+/* ================= LOGO ================= */
+
+.logo-box{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.logo-icon{
+  width:50px;
+  height:50px;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1d4ed8
+    );
+
+  color:white;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:20px;
+  font-weight:700;
+
+  box-shadow:
+    0 10px 25px rgba(37,99,235,0.30);
+
+  transition:0.35s ease;
+}
+
+.logo-icon:hover{
+  transform:rotate(-8deg) scale(1.05);
+}
+
+.nav-logo{
+  font-size:26px;
+  font-weight:800;
+
+  color:#0f172a;
+}
+
+/* ================= NAV LINKS ================= */
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:35px;
+}
+
+.nav-links span{
+  position:relative;
+
+  cursor:pointer;
+
+  color:#475569;
+
+  font-size:15px;
+  font-weight:600;
+
+  transition:0.3s ease;
+}
+
+.nav-links span:hover{
+  color:#2563eb;
+}
+
+.nav-links span::after{
+  content:"";
+
+  position:absolute;
+  left:0;
+  bottom:-6px;
+
+  width:0%;
+  height:2px;
+
+  background:#2563eb;
+
+  transition:0.3s ease;
+}
+
+.nav-links span:hover::after{
+  width:100%;
+}
+
+/* ================= MAIN CONTENT ================= */
+
+.main-wrapper{
+  width:100%;
+  max-width:1280px;
+
+  margin:auto;
+
+  padding:90px 30px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  text-align:center;
+}
+
+/* ================= BADGE ================= */
+
+.top-badge{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  padding:12px 22px;
+
+  border-radius:40px;
+
+  background:rgba(255,255,255,0.80);
+
+  border:1px solid rgba(255,255,255,0.7);
+
+  backdrop-filter:blur(10px);
+
+  font-size:14px;
+  font-weight:600;
+
+  color:#2563eb;
+
+  box-shadow:
+    0 8px 20px rgba(37,99,235,0.10);
+}
+
+.dot{
+  width:10px;
+  height:10px;
+
+  border-radius:50%;
+
+  background:#2563eb;
+
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{
+    transform:scale(1);
+    opacity:1;
+  }
+
+  50%{
+    transform:scale(1.4);
+    opacity:.5;
+  }
+
+  100%{
+    transform:scale(1);
+    opacity:1;
+  }
+}
+
+/* ================= TITLE ================= */
+
+.brand-name{
+  margin-top:35px;
+
+  font-size:90px;
+  font-weight:800;
+  line-height:1;
+
+  letter-spacing:-3px;
+
+  color:#0f172a;
+}
+
+.brand-sub{
+  margin-top:18px;
+
+  font-size:42px;
+  font-weight:700;
+
+  color:#2563eb;
+}
+
+.brand-desc{
+  margin-top:28px;
+
+  max-width:850px;
+
+  font-size:21px;
+  line-height:1.9;
+
+  color:#64748b;
+}
+
+/* ================= PORTAL WRAPPER ================= */
+
+.portal-wrapper{
+  width:100%;
+
+  margin-top:75px;
+
+  display:flex;
+  justify-content:center;
+  gap:35px;
+  flex-wrap:wrap;
+}
+
+/* ================= LOGIN CARD ================= */
+
+.login-box{
+  width:380px;
+
+  padding:38px 32px;
+
+  border-radius:28px;
+
+  background:rgba(255,255,255,0.88);
+
+  border:1px solid rgba(255,255,255,0.6);
+
+  backdrop-filter:blur(16px);
+
+  text-align:center;
+
+  cursor:pointer;
+
+  transition:0.4s ease;
+
+  box-shadow:
+    0 15px 40px rgba(15,23,42,0.08);
+
+  position:relative;
+  overflow:hidden;
+}
+
+/* ================= CARD GLOW ================= */
+
+.login-box::before{
+  content:"";
+
+  position:absolute;
+
+  width:180px;
+  height:180px;
+
+  border-radius:50%;
+
+  background:rgba(37,99,235,0.08);
+
+  top:-80px;
+  right:-80px;
+
+  transition:0.4s ease;
+}
+
+.login-box:hover::before{
+  transform:scale(1.3);
+}
+
+.login-box:hover{
+  transform:translateY(-10px);
+
+  box-shadow:
+    0 25px 55px rgba(37,99,235,0.18);
+}
+
+/* ================= ICON ================= */
+
+.icon-box{
+  width:80px;
+  height:80px;
+
+  margin:auto auto 24px;
+
+  border-radius:24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(37,99,235,0.15),
+      rgba(37,99,235,0.08)
+    );
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  transition:0.35s ease;
+}
+
+.login-box:hover .icon-box{
+  transform:rotate(-8deg) scale(1.08);
+}
+
+.icon{
+  font-size:34px;
+  color:#2563eb;
+}
+
+/* ================= CARD TEXT ================= */
+
+.small-title{
+  font-size:12px;
+  font-weight:700;
+
+  letter-spacing:3px;
+
+  color:#94a3b8;
+}
+
+.login-box h3{
+  margin-top:16px;
+
+  font-size:34px;
+  font-weight:800;
+
+  color:#0f172a;
+}
+
+.login-box p{
+  margin-top:16px;
+
+  font-size:16px;
+  line-height:1.8;
+
+  color:#64748b;
+}
+
+/* ================= BUTTON ================= */
+
+.login-box button{
+  width:100%;
+
+  margin-top:28px;
+  padding:16px;
+
+  border:none;
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1d4ed8
+    );
+
+  color:white;
+
+  font-size:16px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:0.35s ease;
+
+  box-shadow:
+    0 10px 25px rgba(37,99,235,0.25);
+}
+
+.login-box button:hover{
+  transform:translateY(-3px);
+
+  box-shadow:
+    0 18px 35px rgba(37,99,235,0.35);
+
+  background:
+    linear-gradient(
+      135deg,
+      #1d4ed8,
+      #1e40af
+    );
+}
+
+.outline-btn{
+  background:white !important;
+  color:#2563eb !important;
+
+  border:2px solid #bfdbfe !important;
+
+  box-shadow:none !important;
+}
+
+.outline-btn:hover{
+  background:#eff6ff !important;
+}
+
+/* ================= FEATURES ================= */
+
+.features{
+  width:100%;
+
+  margin-top:90px;
+  padding-top:50px;
+
+  border-top:1px solid rgba(148,163,184,0.20);
+
+  display:flex;
+  justify-content:space-around;
+  flex-wrap:wrap;
+  gap:30px;
+}
+
+.feature{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  gap:16px;
+
+  transition:0.35s ease;
+}
+
+.feature:hover{
+  transform:translateY(-6px);
+}
+
+.feature-icon{
+  width:70px;
+  height:70px;
+
+  border-radius:22px;
+
+  background:rgba(255,255,255,0.85);
+
+  border:1px solid rgba(255,255,255,0.6);
+
+  backdrop-filter:blur(12px);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:26px;
+  color:#2563eb;
+
+  box-shadow:
+    0 10px 25px rgba(15,23,42,0.08);
+
+  transition:0.35s ease;
+}
+
+.feature:hover .feature-icon{
+  transform:rotate(-8deg) scale(1.08);
+}
+
+.feature span{
+  font-size:16px;
+  font-weight:600;
+
+  color:#475569;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:992px){
+
+  .navbar{
+    padding:0 25px;
+  }
+
+  .nav-links{
+    gap:20px;
+  }
+
+  .brand-name{
+    font-size:65px;
+  }
+
+  .brand-sub{
+    font-size:32px;
+  }
+
+  .brand-desc{
+    font-size:17px;
+  }
+}
+
+@media(max-width:768px){
+
+  .navbar{
+    flex-direction:column;
+    height:auto;
+
+    padding:18px;
+    gap:15px;
+  }
+
+  .main-wrapper{
+    padding:60px 20px;
+  }
+
+  .brand-name{
+    font-size:48px;
+  }
+
+  .brand-sub{
+    font-size:26px;
+  }
+
+  .brand-desc{
+    font-size:15px;
+    line-height:1.7;
+  }
+
+  .login-box{
+    width:100%;
+    max-width:360px;
+  }
+
+  .features{
+    justify-content:center;
+  }
+}

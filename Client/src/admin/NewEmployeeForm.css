@@ -1,0 +1,510 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* =========================================================
+GLOBAL
+========================================================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:"Inter",sans-serif;
+  background:#f4f7ff;
+  color:#111827;
+}
+
+/* =========================================================
+PAGE
+========================================================= */
+
+.form-page{
+  width:100%;
+  min-height:100vh;
+
+  padding:40px 20px;
+}
+
+/* =========================================================
+BACK BUTTON
+========================================================= */
+
+.top-back{
+  width:100%;
+  max-width:1200px;
+
+  margin:0 auto 24px;
+}
+
+.back-btn-top{
+  height:52px;
+
+  padding:0 22px;
+
+  border:none;
+  border-radius:14px;
+
+  background:#ffffff;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+
+  font-size:15px;
+  font-weight:700;
+
+  color:#4f46e5;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.05);
+
+  transition:0.3s ease;
+}
+
+.back-btn-top:hover{
+  transform:translateY(-2px);
+}
+
+/* =========================================================
+HEADER
+========================================================= */
+
+.form-header{
+  width:100%;
+  max-width:1200px;
+
+  margin:0 auto 30px;
+
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+.header-icon{
+  width:80px;
+  height:80px;
+
+  border-radius:22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #2563eb
+    );
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:#ffffff;
+
+  font-size:32px;
+
+  flex-shrink:0;
+}
+
+.form-header h1{
+  font-size:40px;
+  font-weight:800;
+
+  color:#0f172a;
+}
+
+.form-header p{
+  margin-top:6px;
+
+  font-size:15px;
+
+  color:#6b7280;
+}
+
+/* =========================================================
+MAIN CONTAINER
+========================================================= */
+
+.form-container{
+  width:100%;
+  max-width:1200px;
+
+  margin:auto;
+
+  background:#ffffff;
+
+  border-radius:28px;
+
+  padding:40px;
+
+  box-shadow:
+    0 20px 50px rgba(15,23,42,0.08);
+}
+
+/* =========================================================
+SECTION
+========================================================= */
+
+.form-section{
+  width:100%;
+}
+
+.section-top{
+  display:flex;
+  align-items:center;
+  gap:16px;
+
+  margin-bottom:30px;
+}
+
+.section-icon{
+  width:58px;
+  height:58px;
+
+  border-radius:18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:22px;
+
+  flex-shrink:0;
+}
+
+.personal-icon{
+  background:#eef2ff;
+  color:#4f46e5;
+}
+
+.work-icon{
+  background:#ecfdf5;
+  color:#059669;
+}
+
+.section-top h2{
+  font-size:26px;
+  font-weight:800;
+
+  color:#111827;
+}
+
+.section-top p{
+  margin-top:4px;
+
+  font-size:14px;
+
+  color:#6b7280;
+}
+
+/* =========================================================
+GRID
+========================================================= */
+
+.form-grid{
+  width:100%;
+
+  display:grid;
+
+  /* FIRST FIELD BIGGER */
+  grid-template-columns:
+    1.3fr 1fr;
+
+  gap:24px;
+}
+
+/* =========================================================
+FIELD
+========================================================= */
+
+.form-field{
+  width:100%;
+}
+
+/* =========================================================
+LABEL
+========================================================= */
+
+.form-field label{
+  display:block;
+
+  margin-bottom:10px;
+
+  font-size:14px;
+  font-weight:700;
+
+  color:#1f2937;
+}
+
+.form-field label span{
+  color:#ef4444;
+}
+
+/* =========================================================
+INPUT BOX
+========================================================= */
+
+.input-box{
+  width:100%;
+  height:60px;
+
+  border:1.5px solid #dbe4f0;
+  border-radius:16px;
+
+  background:#f9fbff;
+
+  display:flex;
+  align-items:center;
+
+  padding:0 18px;
+
+  gap:14px;
+
+  transition:0.3s ease;
+}
+
+.input-box:hover{
+  border-color:#a5b4fc;
+}
+
+.input-box:focus-within{
+  border-color:#4f46e5;
+
+  background:#ffffff;
+
+  box-shadow:
+    0 0 0 4px rgba(79,70,229,0.08);
+}
+
+/* =========================================================
+ICON
+========================================================= */
+
+.input-box svg{
+  width:18px;
+  height:18px;
+
+  min-width:18px;
+
+  flex-shrink:0;
+
+  color:#94a3b8;
+}
+
+/* =========================================================
+INPUT + SELECT
+========================================================= */
+
+.input-box input,
+.input-box select{
+  flex:1;
+
+  width:100%;
+  height:100%;
+
+  border:none;
+  outline:none;
+
+  background:transparent;
+
+  font-family:"Inter",sans-serif;
+
+  font-size:15px;
+  font-weight:500;
+
+  color:#111827;
+
+  line-height:1;
+
+  padding:0;
+
+  margin:0;
+}
+
+/* =========================================================
+PLACEHOLDER
+========================================================= */
+
+.input-box input::placeholder{
+  color:#9ca3af;
+}
+
+/* =========================================================
+SELECT FIX
+========================================================= */
+
+.input-box select{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+
+  cursor:pointer;
+
+  padding-right:10px;
+}
+
+/* =========================================================
+DIVIDER
+========================================================= */
+
+.section-divider{
+  width:100%;
+  height:1px;
+
+  background:#e5e7eb;
+
+  margin:42px 0;
+}
+
+/* =========================================================
+BUTTONS
+========================================================= */
+
+.form-actions{
+  margin-top:40px;
+
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+
+  gap:16px;
+
+  flex-wrap:wrap;
+}
+
+.cancel-btn{
+  min-width:150px;
+  height:56px;
+
+  border:none;
+  border-radius:16px;
+
+  background:#f3f4f6;
+
+  color:#374151;
+
+  font-size:15px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:0.3s ease;
+}
+
+.cancel-btn:hover{
+  background:#e5e7eb;
+}
+
+.save-btn{
+  min-width:220px;
+  height:56px;
+
+  border:none;
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #2563eb
+    );
+
+  color:#ffffff;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:10px;
+
+  font-size:15px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 12px 30px rgba(37,99,235,0.25);
+
+  transition:0.3s ease;
+}
+
+.save-btn:hover{
+  transform:translateY(-2px);
+}
+
+/* =========================================================
+TABLET
+========================================================= */
+
+@media(max-width:900px){
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-container{
+    padding:30px;
+  }
+
+  .form-header h1{
+    font-size:34px;
+  }
+}
+
+/* =========================================================
+MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+  .form-page{
+    padding:16px;
+  }
+
+  .form-header{
+    align-items:flex-start;
+    gap:14px;
+  }
+
+  .header-icon{
+    width:64px;
+    height:64px;
+
+    font-size:26px;
+  }
+
+  .form-header h1{
+    font-size:28px;
+    line-height:1.2;
+  }
+
+  .form-container{
+    padding:22px;
+
+    border-radius:22px;
+  }
+
+  .section-top{
+    align-items:flex-start;
+  }
+
+  .section-top h2{
+    font-size:22px;
+  }
+
+  .input-box{
+    height:56px;
+  }
+
+  .form-actions{
+    flex-direction:column;
+  }
+
+  .cancel-btn,
+  .save-btn{
+    width:100%;
+  }
+}
