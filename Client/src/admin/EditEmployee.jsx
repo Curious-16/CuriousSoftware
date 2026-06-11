@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import "./EditEmployee.css";
+import { API } from "../api";
 
 function EditEmployee() {
 
@@ -45,7 +46,7 @@ function EditEmployee() {
 
           const res =
             await axios.get(
-              `http://localhost:7001/employee/${id}`
+              `${API.ADMIN}/employee/${id}`
             );
 
           console.log(
@@ -122,7 +123,7 @@ function EditEmployee() {
 
         const res =
           await axios.put(
-            `http://localhost:7001/update-employee/${id}`,
+            `${API.ADMIN}/update-employee/${id}`,
             form
           );
 

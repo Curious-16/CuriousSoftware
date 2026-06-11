@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 
 import "./candidate.css";
+import { API } from "../api";
 
 export default function CandidateDashboard() {
 
@@ -122,7 +123,7 @@ export default function CandidateDashboard() {
 
         const res =
           await axios.get(
-            `http://localhost:7002/assigned/${employee.employeeId}`
+            `${API.CANDIDATE}/assigned/${employee.employeeId}`
           );
 
         console.log(
@@ -226,7 +227,7 @@ export default function CandidateDashboard() {
         // ================= API UPDATE =================
 
         await axios.put(
-          `http://localhost:7002/update-working-status/${candidateId}`,
+          `${API.CANDIDATE}/update-working-status/${candidateId}`,
           {
             workingStatus:
               newStatus,
@@ -276,7 +277,7 @@ export default function CandidateDashboard() {
 
         const res =
           await axios.get(
-            `http://localhost:7002/download-candidate/${candidateId}`,
+            `${API.CANDIDATE}/download-candidate/${candidateId}`,
             {
               responseType: "blob",
             }
@@ -374,7 +375,7 @@ const openAnalysisPage = () => {
         ) {
 
           await axios.put(
-            `http://localhost:7001/employee/logout/${employee.employeeId}`
+            `${API.ADMIN}/employee/logout/${employee.employeeId}`
           );
 
         }

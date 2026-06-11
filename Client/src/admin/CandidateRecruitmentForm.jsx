@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./CandidateRecruitmentForm.css";
+import { API } from "../api";
 
 const CandidateRecruitmentForm = () => {
 
@@ -231,7 +232,7 @@ const CandidateRecruitmentForm = () => {
       console.log("📤 Payload :", payload);
 
       const res = await axios.post(
-        "http://localhost:7002/save-candidate-form",
+                `${API.CANDIDATE}/save-candidate-form`,
         payload
       );
 

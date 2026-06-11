@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API } from "../api";
 
 import {
   FaUser,
@@ -33,16 +34,10 @@ function AdminLogin() {
 
       setLoading(true);
 
-      // const res = await axios.post(
-      //   "http://localhost:7001/admin/login",
-      //   {
-      //     username,
-      //     password,
-      //   }
-      // );
+      
 
        const res = await axios.post(
-        "https://curioussoftware-2.onrender.com/admin/login",
+                `${API.ADMIN}/admin/login`,
         {
           username,
           password,

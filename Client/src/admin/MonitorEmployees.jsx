@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./MonitorEmployees.css";
+import { API } from "../api";
 
 function MonitorEmployees() {
 
@@ -35,7 +36,7 @@ function MonitorEmployees() {
 
       const res =
         await axios.get(
-          "http://localhost:7001/monitor-employees"
+          `${API.ADMIN}/monitor-employees`
         );
 
       setMonitorData(res.data);

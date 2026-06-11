@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
+import { API } from "../api";
 
 import {
   FaUser,
@@ -51,7 +52,7 @@ function EmployeesLogin() {
         const res =
           await axios.post(
 
-            "http://localhost:7001/employee/login",
+            `${API.ADMIN}/employee/login`,
 
             {
               employeeId,

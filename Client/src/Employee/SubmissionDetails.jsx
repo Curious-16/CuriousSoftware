@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./submission.css";
+import { API } from "../api";
 
 export default function SubmissionDetails() {
 
@@ -63,7 +64,7 @@ export default function SubmissionDetails() {
   const loadPreviousSubmission = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:7002/submission-details/${candidate._id}`
+       `${API.CANDIDATE}/submission-details/${candidate._id}`
       );
 
       if (res.data) {
@@ -125,7 +126,7 @@ export default function SubmissionDetails() {
       }
 
       const res = await axios.post(
-        "http://localhost:7002/submission-details",
+        `${API.CANDIDATE}/submission-details`,
         finalPayload
       );
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API } from "../api";
 
 import {
   FaArrowLeft,
@@ -46,7 +47,7 @@ function NewEmployeeForm() {
     try {
 
       const res = await axios.post(
-        "http://localhost:7001/add-employee",
+        `${API.ADMIN}/add-employee`,
         form
       );
 

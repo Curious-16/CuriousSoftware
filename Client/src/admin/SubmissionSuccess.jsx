@@ -6,6 +6,7 @@ import React, {
 import axios from "axios";
 
 import "./SubmissionSuccess.css";
+import { API } from "../api";
 
 const SubmissionSuccess = () => {
 
@@ -40,7 +41,7 @@ const SubmissionSuccess = () => {
 
           const res =
             await axios.get(
-              "http://localhost:7001/employees"
+              `${API.ADMIN}/employees`
             );
 
           const activeEmployees =
@@ -119,7 +120,7 @@ const SubmissionSuccess = () => {
         const res =
           await axios.post(
 
-            `http://localhost:7002/assign-candidate/${data._id}`,
+            `${API.CANDIDATE}/assign-candidate/${data._id}`,
 
             payload
 
@@ -169,7 +170,7 @@ const SubmissionSuccess = () => {
 
         window.open(
 
-          `http://localhost:7002/download-candidate/${data._id}`,
+          `${API.CANDIDATE}/download-candidate/${data._id}`,
 
           "_blank"
 

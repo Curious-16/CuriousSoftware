@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { API } from "../api";
 import {
   FaTrash,
   FaArrowLeft,
@@ -27,7 +27,7 @@ function AdminQueries() {
     try {
 
       const res = await axios.get(
-        "http://localhost:7001/api/contactus"
+                `${API.ADMIN}/api/contactus`
       );
 
       setQueries(res.data);
@@ -59,7 +59,7 @@ function AdminQueries() {
     try {
 
       await axios.delete(
-        `http://localhost:7001/api/contactus/${id}`
+          `${API.ADMIN}/api/contactus/${id}`
       );
 
       setQueries((prevQueries) =>

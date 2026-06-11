@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API } from "./api";
 
 import {
   FaEnvelope,
@@ -44,7 +45,7 @@ function Contact() {
     try {
 
       const res = await axios.post(
-        "http://localhost:7001/api/contactus",
+        `${API.ADMIN}/api/contactus`,
         form
       );
 

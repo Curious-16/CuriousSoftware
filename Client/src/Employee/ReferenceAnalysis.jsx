@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API } from "../api";
 
 import "./ReferenceAnalysis.css";
 
@@ -18,7 +19,7 @@ export default function ReferenceAnalysis() {
   const loadData = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:7002/reference-analysis/${referenceNumber}`
+        `${API.CANDIDATE}/reference-analysis/${referenceNumber}`
       );
 
       setData(res.data);

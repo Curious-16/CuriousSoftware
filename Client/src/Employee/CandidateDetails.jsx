@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 
 import "./CandidateDetails.css";
+import { API } from "../api";
 
 export default function CandidateDetails() {
 
@@ -37,7 +38,7 @@ export default function CandidateDetails() {
 
         const res =
           await axios.get(
-            `http://localhost:7002/candidate-form/${id}`
+            `${API.CANDIDATE}/candidate-form/${id}`
           );
 
         console.log(

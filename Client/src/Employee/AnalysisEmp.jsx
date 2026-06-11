@@ -5,7 +5,7 @@ import "./analysis.css";
 
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-
+import { API } from "../api";
 export default function AnalysisEmp() {
 
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function AnalysisEmp() {
       const employeeId = employee.employeeId.toUpperCase().trim();
 
       const res = await axios.get(
-        `http://localhost:7002/submission-analysis/${employeeId}`,
+        `${API.CANDIDATE}/submission-analysis/${employeeId}`,
         {
           params: {
             fromDate: customFromDate,

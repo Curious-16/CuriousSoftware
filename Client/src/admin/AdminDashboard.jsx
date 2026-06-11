@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Bar, Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 import "./AdminDashboard.css";
+import { API } from "../api";
 
 function AdminDashboard() {
 
@@ -21,7 +22,7 @@ function AdminDashboard() {
     try {
 
       const res = await axios.get(
-        "http://localhost:7001/employees"
+        `${API.ADMIN}/employees`
       );
 
       setEmployees(res.data);
@@ -41,7 +42,7 @@ function AdminDashboard() {
     try {
 
       const res = await axios.get(
-        "http://localhost:7001/today-login-status"
+                `${API.ADMIN}/today-login-status`
       );
 
       setLoginStatus(res.data);
@@ -70,7 +71,7 @@ function AdminDashboard() {
     try {
 
       const res = await axios.post(
-        "http://localhost:7001/invite",
+                `${API.ADMIN}/invite`,
         {
           email: emp.email,
           employeeId: emp.employeeId,
@@ -95,7 +96,7 @@ function AdminDashboard() {
     try {
 
       await axios.put(
-        `http://localhost:7001/toggle-status/${id}`
+                `${API.ADMIN}/toggle-status/${id}`
       );
 
       loadEmployees();
