@@ -33,8 +33,16 @@ function AdminLogin() {
 
       setLoading(true);
 
-      const res = await axios.post(
-        "http://localhost:7001/admin/login",
+      // const res = await axios.post(
+      //   "http://localhost:7001/admin/login",
+      //   {
+      //     username,
+      //     password,
+      //   }
+      // );
+
+       const res = await axios.post(
+        "https://curioussoftware-2.onrender.com/admin/login",
         {
           username,
           password,
