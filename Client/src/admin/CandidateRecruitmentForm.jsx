@@ -232,9 +232,15 @@ const CandidateRecruitmentForm = () => {
       console.log("📤 Payload :", payload);
 
       const res = await axios.post(
-                `${API.CANDIDATE}/save-candidate-form`,
-        payload
-      );
+  `${API.ADMIN}/save-candidate-form`,
+  payload,
+  {
+    headers: {
+      Authorization:
+        `Bearer ${localStorage.getItem("token")}`
+    }
+  }
+);
 
       console.log("✅ Submitted :", res.data);
 

@@ -17,19 +17,45 @@ export default function ReferenceAnalysis() {
   }, []);
 
   const loadData = async () => {
-    try {
-      const res = await axios.get(
-        `${API.CANDIDATE}/reference-analysis/${referenceNumber}`
-      );
 
-      setData(res.data);
-    } catch (err) {
-      console.log("Reference Analysis Error:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
 
+    const token = localStorage.getItem("token");
+
+    console.log("========== Reference Analysis ==========");
+    console.log("Reference Number:", referenceNumber);
+    console.log("Token:", token);
+
+    const res = await axios.get(
+      `${API.CANDIDATE}/reference-analysis/${referenceNumber}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("Reference Response:", res.data);
+
+    setData(res.data);
+
+  } catch (err) {
+
+    console.log("========== Reference Error ==========");
+
+    console.log("Status:", err.response?.status);
+
+    console.log("Response:", err.response?.data);
+
+    console.log("Message:", err.message);
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
   const handleBack = () => {
     navigate(-1);
   };

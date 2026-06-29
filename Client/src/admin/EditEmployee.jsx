@@ -44,10 +44,19 @@ function EditEmployee() {
 
         try {
 
-          const res =
-            await axios.get(
-              `${API.ADMIN}/employee/${id}`
-            );
+          const token =
+  localStorage.getItem("token");
+
+const res =
+  await axios.get(
+    `${API.ADMIN}/employee/${id}`,
+    {
+      headers: {
+        Authorization:
+          `Bearer ${token}`
+      }
+    }
+  );
 
           console.log(
             "✅ Employee Data :",
@@ -121,11 +130,20 @@ function EditEmployee() {
 
         setError("");
 
-        const res =
-          await axios.put(
-            `${API.ADMIN}/update-employee/${id}`,
-            form
-          );
+        const token =
+  localStorage.getItem("token");
+
+const res =
+  await axios.put(
+    `${API.ADMIN}/update-employee/${id}`,
+    form,
+    {
+      headers: {
+        Authorization:
+          `Bearer ${token}`
+      }
+    }
+  );
 
         alert(
           res.data.message

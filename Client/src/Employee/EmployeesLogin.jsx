@@ -24,11 +24,9 @@ function EmployeesLogin() {
 
   const navigate = useNavigate();
 
-  const [employeeId, setEmployeeId] =
-    useState("");
-
-  const [password, setPassword] =
-    useState("");
+  const [companyCode, setCompanyCode] = useState("");
+const [employeeId, setEmployeeId] = useState("");
+const [password, setPassword] = useState("");
 
   const [error, setError] =
     useState("");
@@ -38,59 +36,90 @@ function EmployeesLogin() {
 
   // ================= LOGIN =================
 
-  const handleSubmit =
-    async (e) => {
+  // ================= LOGIN =================
 
-      e.preventDefault();
+const handleSubmit = async (e) => {
 
-      try {
+  e.preventDefault();
 
-        setLoading(true);
+  try {
 
-        setError("");
+    setLoading(true);
+    setError("");
 
-        const res =
-          await axios.post(
-
-            `${API.ADMIN}/employee/login`,
-
-            {
-              employeeId,
-              password,
-            }
-
-          );
-
-        if (res.data.success) {
-
-          localStorage.setItem(
-            "employee",
-            JSON.stringify(
-              res.data.employee
-            )
-          );
-
-          navigate("/candidates");
-
-        }
-
-      } catch (err) {
-
-        setError(
-
-          err.response?.data?.message ||
-
-          "Login Failed"
-
-        );
-
-      } finally {
-
-        setLoading(false);
-
+    const res = await axios.post(
+      `${API.ADMIN}/employee/login`,
+      {
+         companyCode,
+        employeeId,
+        password,
       }
+    );
 
-    };
+    console.log(
+      "FULL RESPONSE:",
+      res.data
+    );
+
+    if (res.data.success) {
+
+      console.log(
+        "TOKEN FROM SERVER:",
+        res.data.token
+      );
+
+      localStorage.setItem(
+        "employee",
+        JSON.stringify(
+          res.data.employee
+        )
+      );
+
+      localStorage.setItem(
+        "token",
+        res.data.token
+      );
+
+      console.log(
+        "TOKEN AFTER SAVE:",
+        localStorage.getItem("token")
+      );
+
+      console.log(
+        "EMPLOYEE AFTER SAVE:",
+        localStorage.getItem("employee")
+      );
+
+      navigate("/candidates");
+
+    } else {
+
+      setError(
+        res.data.message ||
+        "Login Failed"
+      );
+
+    }
+
+  } catch (err) {
+
+    console.error(
+      "LOGIN ERROR:",
+      err
+    );
+
+    setError(
+      err.response?.data?.message ||
+      "Login Failed"
+    );
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
 
   return (
 
@@ -294,6 +323,26 @@ function EmployeesLogin() {
               />
 
             </div>
+
+            <label>
+  Company Code
+</label>
+
+<div className="input-box">
+
+  <FaShieldAlt className="input-icon" />
+
+  <input
+    type="text"
+    placeholder="Enter Company Code"
+    value={companyCode}
+    onChange={(e) =>
+      setCompanyCode(e.target.value.toUpperCase())
+    }
+    required
+  />
+
+</div>
 
             {/* PASSWORD */}
 

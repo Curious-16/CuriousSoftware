@@ -6,10 +6,34 @@ import cors from "cors";
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import authMiddleware from "./middleware/authMiddleware.js";
+import companyRoutes from "./routes/companyRoutes.js";
+import companyAuthRoutes from "./routes/companyAuthRoutes.js";
+
 
 dotenv.config();
 
+// console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
 const app = express();
+
+// const DEFAULT_COMPANY_ID =
+//   new mongoose.Types.ObjectId(
+//     "6a2f9af9648b78b8db1fb5ce"
+//   );
+
+
+// =======================
+// TEST AUTH ROUTE
+// =======================
+
+app.get("/test-auth", authMiddleware, async (req, res) => {
+  res.json({
+    success: true,
+    user: req.user
+  });
+});
 
 /* ======================================================
    MIDDLEWARE
@@ -36,100 +60,164 @@ app.use(cors({
 app.use(express.json());
 
 /* ======================================================
-   DATABASE CONNECTION
+   DATABASE CONNECTIONS
 ====================================================== */
 
 mongoose
-  .connect(
-    "mongodb://127.0.0.1:27017/adminempDB"
-  )
+  .connect("mongodb://127.0.0.1:27017/adminempDB")
   .then(() => {
-
-    console.log(
-      "✅ MongoDB Connected"
-    );
-
+    console.log("✅ adminempDB Connected");
   })
   .catch((err) => {
-
-    console.log(
-      "❌ DB Error :",
-      err
-    );
-
+    console.log("❌ DB Error :", err);
   });
 
+const candidateDB = mongoose.createConnection(
+  "mongodb://127.0.0.1:27017/candidateDB"
+);
+
+candidateDB.on("connected", () => {
+  console.log("✅ candidateDB Connected");
+});
+
+/* ======================================================
+   MODELS
+====================================================== */
+
+import Company from "./Models/Company.js";
+
+import Employee from "./Models/Employees.js";
+
+const CandidateForm = candidateDB.model(
+  "candidateforms",
+  new mongoose.Schema({}, { strict: false })
+);
+
+const Submission = candidateDB.model(
+  "submissioninnercandidates",
+  new mongoose.Schema({}, { strict: false })
+);
 /* ======================================================
    EMPLOYEE SCHEMA
 ====================================================== */
 
-const employeeSchema =
-  new mongoose.Schema(
-    {
-
-      employeeId: {
-        type: String,
-        required: true,
-        uppercase: true,
-        unique: true,
-        trim: true,
-      },
-
-      firstName: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-
-      lastName: {
-        type: String,
-        trim: true,
-      },
-
-      email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-      },
-
-      mobileNumber: {
-        type: String,
-        trim: true,
-      },
-
-      department: String,
-
-      designation: String,
-
-      salary: Number,
-
-      password: {
-        type: String,
-        default: null,
-      },
-
-      activated: {
-        type: Boolean,
-        default: false,
-      },
-
-      status: {
-        type: String,
-        default: "active",
-      },
-
+const employeeSchema = new mongoose.Schema(
+  {
+    employeeId: {
+      type: String,
+      required: true,
+      uppercase: true,
+      trim: true,
     },
-    {
-      timestamps: true,
-    }
-  );
 
-const Employee =
-  mongoose.model(
-    "inneremployees",
-    employeeSchema
-  );
+    firstName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    lastName: {
+      type: String,
+      trim: true,
+    },
+
+    email: {
+      type: String,
+      required: true,
+      lowercase: true,
+      trim: true,
+    },
+
+    mobileNumber: {
+      type: String,
+      trim: true,
+    },
+
+    department: {
+      type: String,
+      trim: true,
+    },
+
+    designation: {
+      type: String,
+      trim: true,
+    },
+
+    salary: {
+      type: Number,
+      default: 0,
+    },
+
+    // MULTI COMPANY SUPPORT
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "companies",
+      required: true,
+    },
+
+    // ROLE MANAGEMENT
+    role: {
+      type: String,
+      enum: [
+        "SUPER_ADMIN",
+        "COMPANY_ADMIN",
+        "EMPLOYEE",
+      ],
+      default: "EMPLOYEE",
+    },
+
+    // AUTH
+    password: {
+      type: String,
+      default: null,
+    },
+
+    activated: {
+      type: Boolean,
+      default: false,
+    },
+
+    signupDate: {
+      type: Date,
+      default: null,
+    },
+
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+// Multi-tenant unique indexes
+employeeSchema.index(
+  {
+    companyId: 1,
+    employeeId: 1,
+  },
+  {
+    unique: true,
+  }
+);
+
+employeeSchema.index(
+  {
+    companyId: 1,
+    email: 1,
+  },
+  {
+    unique: true,
+  }
+);
+
+// const Employee = mongoose.model(
+//   "inneremployees",
+//   employeeSchema
+// );
 
 /* ======================================================
    MONITOR EMPLOYEE SCHEMA
@@ -137,6 +225,11 @@ const Employee =
 
 const monitorSchema = new mongoose.Schema(
 {
+  companyId: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "companies",
+  required: true
+},
   employeeId: {
     type: String,
     unique: true
@@ -254,56 +347,81 @@ app.post(
   }
 );
 
-/* ======================================================
-   GET ALL EMPLOYEES
-====================================================== */
+//* ======================================================GET ALL EMPLOYEES
+   
+
 
 app.get(
   "/employees",
+  authMiddleware,
   async (req, res) => {
 
     try {
 
+      console.log("=================================");
+      console.log("JWT USER:", req.user);
+
+      console.log(
+        "COMPANY ID FROM TOKEN:",
+        req.user.companyId
+      );
+
       const employees =
-        await Employee.find().sort({
-          createdAt: -1,
+        await Employee.find({
+          companyId: req.user.companyId
+        }).sort({
+          createdAt: -1
         });
 
-      res.json(employees);
+      console.log(
+        "FOUND EMPLOYEES:",
+        employees.length
+      );
+
+      console.log(
+        "EMPLOYEE IDS:",
+        employees.map(
+          (e) => e.employeeId
+        )
+      );
+
+      console.log("=================================");
+
+      res.json({
+        success: true,
+        employees
+      });
 
     } catch (err) {
 
       console.log(
-        "❌ Fetch Employees Error :",
+        "❌ Fetch Employees Error:",
         err
       );
 
       res.status(500).json({
-
         success: false,
-
-        message:
-          "Fetch Failed",
-
+        message: "Fetch Failed"
       });
 
     }
 
   }
 );
-
 /* ======================================================
    GET MONITOR EMPLOYEES
 ====================================================== */
 
 app.get(
   "/monitor-employees",
+  authMiddleware,
   async (req, res) => {
 
     try {
 
       const data =
-        await MonitorEmployee.find()
+        await MonitorEmployee.find({companyId: req.user.companyId})
+        
         .sort({
           employeeId: 1
         });
@@ -329,6 +447,7 @@ app.get(
 
 app.get(
   "/today-login-status",
+  authMiddleware,
   async (req, res) => {
 
     try {
@@ -344,6 +463,7 @@ app.get(
 
       const monitorData =
         await MonitorEmployee.find({
+          companyId: req.user.companyId,
           loginTime: {
             $gte: startOfDay
           }
@@ -377,95 +497,116 @@ app.get(
 ====================================================== */
 
 app.post(
-  "/add-employee",
-  async (req, res) => {
+"/add-employee",
+authMiddleware,
+async (req, res) => {
 
-    try {
+  console.log("=================================");
+console.log("JWT USER:", req.user);
+console.log("COMPANY ID:", req.user.companyId);
+console.log("BODY:", req.body);
+console.log("=================================");
 
-      const {
-        employeeId,
-        email,
-      } = req.body;
 
-      const existingEmp =
-        await Employee.findOne({
+try {
 
-          employeeId:
-            employeeId.toUpperCase(),
+  const {
+    employeeId,
+    email
+  } = req.body;
 
-        });
+  // Validate Required Fields
+  if (!employeeId || !email) {
 
-      if (existingEmp) {
-
-        return res.status(400).json({
-
-          success: false,
-
-          message:
-            "Employee ID Already Exists",
-
-        });
-
-      }
-
-      const existingEmail =
-        await Employee.findOne({
-          email,
-        });
-
-      if (existingEmail) {
-
-        return res.status(400).json({
-
-          success: false,
-
-          message:
-            "Email Already Exists",
-
-        });
-
-      }
-
-      const employee =
-        new Employee({
-
-          ...req.body,
-
-          employeeId:
-            employeeId.toUpperCase(),
-
-        });
-
-      await employee.save();
-
-      res.json({
-
-        success: true,
-
-        message:
-          "Employee Added Successfully",
-
-      });
-
-    } catch (err) {
-
-      console.log(
-        "❌ Add Employee Error :",
-        err
-      );
-
-      res.status(500).json({
-
-        success: false,
-
-        message:
-          "Failed To Add Employee",
-
-      });
-
-    }
+    return res.status(400).json({
+      success: false,
+      message: "Employee ID and Email are required"
+    });
 
   }
+
+  // Check Employee ID inside same company
+  const existingEmp =
+    await Employee.findOne({
+      companyId: req.user.companyId,
+      employeeId: employeeId.toUpperCase()
+    });
+
+  if (existingEmp) {
+
+    return res.status(400).json({
+      success: false,
+      message: "Employee ID Already Exists"
+    });
+
+  }
+
+  // Check Email inside same company
+  const existingEmail =
+    await Employee.findOne({
+      companyId: req.user.companyId,
+      email: email.toLowerCase()
+    });
+
+  if (existingEmail) {
+
+    return res.status(400).json({
+      success: false,
+      message: "Email Already Exists"
+    });
+
+  }
+
+  // Create Employee
+  const employee = new Employee({
+
+    ...req.body,
+
+    companyId: req.user.companyId,
+
+    role: "EMPLOYEE",
+
+    employeeId:
+      employeeId.toUpperCase(),
+
+    email:
+      email.toLowerCase()
+
+  });
+
+  await employee.save();
+
+  res.status(201).json({
+
+    success: true,
+
+    message:
+      "Employee Added Successfully",
+
+    employee
+
+  });
+
+} catch (err) {
+
+  console.log(
+    "❌ Add Employee Error:",
+    err
+  );
+
+  res.status(500).json({
+
+    success: false,
+
+    message:
+      "Failed To Add Employee"
+
+  });
+
+}
+
+
+}
 );
 
 /* ======================================================
@@ -474,14 +615,17 @@ app.post(
 
 app.get(
   "/employee/:id",
+  authMiddleware,
   async (req, res) => {
 
     try {
 
       const employee =
-        await Employee.findById(
-          req.params.id
-        );
+        await Employee.findOne({
+  _id: req.params.id,
+  companyId:
+    req.user.companyId
+})
 
       if (!employee) {
 
@@ -525,6 +669,7 @@ app.get(
 
 app.put(
   "/update-employee/:id",
+  authMiddleware,
   async (req, res) => {
 
     try {
@@ -535,9 +680,11 @@ app.put(
       } = req.body;
 
       const employee =
-        await Employee.findById(
-          req.params.id
-        );
+        await Employee.findOne({
+  _id: req.params.id,
+  companyId:
+    req.user.companyId
+})
 
       if (!employee) {
 
@@ -552,17 +699,15 @@ app.put(
 
       }
 
-      const duplicateEmp =
-        await Employee.findOne({
-
-          employeeId:
-            employeeId.toUpperCase(),
-
-          _id: {
-            $ne: req.params.id,
-          },
-
-        });
+     const duplicateEmp =
+  await Employee.findOne({
+    companyId: employee.companyId,
+    employeeId:
+      employeeId.toUpperCase(),
+    _id: {
+      $ne: req.params.id,
+    },
+  });
 
       if (duplicateEmp) {
 
@@ -577,16 +722,14 @@ app.put(
 
       }
 
-      const duplicateEmail =
-        await Employee.findOne({
-
-          email,
-
-          _id: {
-            $ne: req.params.id,
-          },
-
-        });
+     const duplicateEmail =
+  await Employee.findOne({
+    companyId: employee.companyId,
+    email: email.toLowerCase(),
+    _id: {
+      $ne: req.params.id,
+    },
+  });
 
       if (duplicateEmail) {
 
@@ -665,14 +808,17 @@ app.put(
 
 app.put(
   "/toggle-status/:id",
+  authMiddleware,
   async (req, res) => {
 
     try {
 
       const employee =
-        await Employee.findById(
-          req.params.id
-        );
+        await Employee.findOne({
+  _id: req.params.id,
+  companyId:
+    req.user.companyId
+})
 
       if (!employee) {
 
@@ -730,6 +876,7 @@ app.put(
 
 app.post(
   "/invite",
+  authMiddleware,
   async (req, res) => {
 
     try {
@@ -737,8 +884,37 @@ app.post(
       const {
         email,
         employeeId,
-        firstName,
+        firstName
       } = req.body;
+
+      const employee =
+        await Employee.findOne({
+          employeeId:
+            employeeId.toUpperCase()
+        });
+
+      if (!employee) {
+
+        return res.status(404).json({
+          success: false,
+          message: "Employee Not Found"
+        });
+
+      }
+
+      const company =
+        await Company.findById(
+          employee.companyId
+        );
+
+      if (!company) {
+
+        return res.status(404).json({
+          success: false,
+          message: "Company Not Found"
+        });
+
+      }
 
       const BASE_URL =
         "http://localhost:5173";
@@ -759,11 +935,11 @@ app.post(
 
           <p>Click below to activate your account:</p>
 
-          <a href="${BASE_URL}/signup/${employeeId}">
+          <a href="${BASE_URL}/signup/${employeeId}/${company.companyCode}">
             Activate Account
           </a>
 
-        `,
+        `
 
       });
 
@@ -772,14 +948,14 @@ app.post(
         success: true,
 
         message:
-          "Invite Sent Successfully",
+          "Invite Sent Successfully"
 
       });
 
     } catch (err) {
 
       console.log(
-        "❌ Invite Error :",
+        "❌ Invite Error:",
         err
       );
 
@@ -788,7 +964,7 @@ app.post(
         success: false,
 
         message:
-          "Invite Failed",
+          "Invite Failed"
 
       });
 
@@ -807,18 +983,50 @@ app.post(
 
     try {
 
-      const {
-        employeeId,
-        password,
-      } = req.body;
+     const {
+  employeeId,
+  password,
+  companyCode
+} = req.body;
+  //    const employee =
+  // await Employee.findOne({
 
-      const employee =
-        await Employee.findOne({
+  //   companyId:
+  //     DEFAULT_COMPANY_ID,
 
-          employeeId:
-            employeeId.toUpperCase(),
+  //   employeeId:
+  //     employeeId.toUpperCase()
 
-        });
+  // });
+
+ const company =
+  await Company.findOne({
+    companyCode
+  });
+
+if (!company) {
+
+  return res.status(404).json({
+    success:false,
+    message:"Company Not Found"
+  });
+
+}
+
+if (!company) {
+
+  return res.status(404).json({
+    success: false,
+    message: "Company Not Found"
+  });
+
+}
+
+const employee =
+  await Employee.findOne({
+    companyId: company._id,
+    employeeId: employeeId.toUpperCase()
+  });
 
       if (!employee) {
 
@@ -887,17 +1095,35 @@ app.post(
 
     try {
 
-      const {
-        employeeId,
-        password
-      } = req.body;
+     const {
+  companyCode,
+  employeeId,
+  password
+} = req.body;
 
-      const employee =
-        await Employee.findOne({
-          employeeId:
-            employeeId.toUpperCase()
-        });
+      console.log("employeeId:", employeeId);
 
+   const company = await Company.findOne({
+  companyCode
+});
+
+if (!company) {
+  return res.status(404).json({
+    success: false,
+    message: "Company Not Found"
+  });
+}
+
+const employee =
+ await Employee.findOne({
+   companyId: company._id,
+   employeeId:
+     employeeId.toUpperCase()
+ });
+
+      console.log("Employee Found:", employee);
+
+      // Employee Not Found
       if (!employee) {
 
         return res.status(404).json({
@@ -907,12 +1133,15 @@ app.post(
 
       }
 
-      const isMatch =
-        await bcrypt.compare(
-          password,
-          employee.password
-        );
+      // Compare Password
+      const isMatch = await bcrypt.compare(
+        password,
+        employee.password
+      );
 
+      console.log("Password Match:", isMatch);
+
+      // Invalid Password
       if (!isMatch) {
 
         return res.status(401).json({
@@ -922,43 +1151,57 @@ app.post(
 
       }
 
-      await MonitorEmployee.findOneAndUpdate(
-        {
-          employeeId:
-            employee.employeeId
-        },
-        {
-          employeeId:
-            employee.employeeId,
+      // Update Monitor Employee Status
+    await MonitorEmployee.findOneAndUpdate(
+{
+  companyId: employee.companyId,
+  employeeId: employee.employeeId
+},
+{
+  companyId: employee.companyId,
+  employeeId: employee.employeeId,
+  firstName: employee.firstName,
+  lastName: employee.lastName,
+  email: employee.email,
+  loginTime: new Date(),
+  logoutTime: null,
+  status: "Online"
+},
+{
+  upsert: true,
+  new: true
+}
+);
+      // Generate JWT Token
+      const token = jwt.sign(
+  {
+    employeeId: employee.employeeId,
 
-          firstName:
-            employee.firstName,
+    companyId: employee.companyId,
 
-          lastName:
-            employee.lastName,
+    role: "EMPLOYEE"
+  },
+  process.env.JWT_SECRET,
+  {
+    expiresIn: "7d"
+  }
+);
 
-          email:
-            employee.email,
-
-          loginTime:
-            new Date(),
-
-          logoutTime:
-            null,
-
-          status:
-            "Online"
-        },
-        {
-          upsert: true,
-          new: true
-        }
-      );
-
+      // Success Response
       res.json({
         success: true,
         message: "Login Successful",
-        employee
+
+        token,
+
+        employee: {
+          _id: employee._id,
+          employeeId: employee.employeeId,
+          firstName: employee.firstName,
+          email: employee.email,
+          companyId: employee.companyId,
+          role: employee.role
+        }
       });
 
     } catch (err) {
@@ -1025,6 +1268,116 @@ app.put(
 
   }
 );
+
+
+
+app.get(
+  "/signup-employee/:employeeId",
+  async (req, res) => {
+
+    try {
+
+      const employee =
+        await Employee.findOne({
+          employeeId:
+            req.params.employeeId.toUpperCase()
+        });
+
+      if (!employee) {
+
+        return res.status(404).json({
+          success: false,
+          message: "Employee Not Found"
+        });
+
+      }
+
+      res.json({
+        employeeId:
+          employee.employeeId,
+        activated:
+          employee.activated
+      });
+
+    } catch (err) {
+
+      console.log(err);
+
+      res.status(500).json({
+        success: false,
+        message: "Server Error"
+      });
+
+    }
+
+  }
+);
+
+
+
+app.post(
+  "/save-candidate-form",
+  authMiddleware,
+  async (req, res) => {
+
+    try {
+
+      const year =
+        new Date()
+          .getFullYear()
+          .toString()
+          .slice(-2);
+
+      const count =
+        await CandidateForm.countDocuments({
+          companyId: req.user.companyId
+        });
+
+      const referenceNumber =
+        `REF${year}${String(
+          count + 1
+        ).padStart(4, "0")}`;
+
+      const candidate =
+        new CandidateForm({
+
+          ...req.body,
+
+          companyId:
+            req.user.companyId,
+
+          referenceNumber
+
+        });
+
+      await candidate.save();
+
+      res.status(201).json({
+
+        success: true,
+
+        data: candidate
+
+      });
+
+    } catch (err) {
+
+      console.log(
+        "SAVE CANDIDATE ERROR:",
+        err
+      );
+
+      res.status(500).json({
+
+        success: false
+
+      });
+
+    }
+
+  }
+);
+
 /* ======================================================
    CONTACT APIs
 ====================================================== */
@@ -1071,7 +1424,7 @@ app.get(
     try {
 
       const data =
-        await ContactUs.find().sort({
+        await ContactUs.find({companyId: req.user.companyId,}).sort({
           createdAt: -1,
         });
 
@@ -1085,6 +1438,51 @@ app.get(
 
   }
 );
+
+
+app.get(
+  "/signup-employee/:employeeId/:companyCode",
+  async (req,res) => {
+
+    const {
+      employeeId,
+      companyCode
+    } = req.params;
+
+    const company =
+      await Company.findOne({
+        companyCode
+      });
+
+    if (!company) {
+
+      return res.status(404).json({
+        message:"Company Not Found"
+      });
+
+    }
+
+    const employee =
+      await Employee.findOne({
+        companyId: company._id,
+        employeeId:
+          employeeId.toUpperCase()
+      });
+
+    if (!employee) {
+
+      return res.status(404).json({
+        message:"Employee Not Found"
+      });
+
+    }
+
+    res.json(employee);
+
+  }
+);
+
+
 
 app.delete(
   "/api/contactus/:id",
@@ -1117,6 +1515,54 @@ app.delete(
 
   }
 );
+
+app.get(
+  "/dashboard/superadmin",
+  authMiddleware,
+  async (req, res) => {
+
+    try {
+
+      const totalCompanies =
+        await Company.countDocuments({_id: req.user.companyId});
+
+      const totalEmployees =
+        await Employee.countDocuments({
+  companyId:
+    req.user.companyId
+})
+
+      const totalCandidates =
+        await CandidateForm.countDocuments({companyId:
+    req.user.companyId});
+
+      const totalSubmissions =
+        await Submission.countDocuments({companyId:
+    req.user.companyId});
+
+      res.json({
+        success: true,
+        totalCompanies,
+        totalEmployees,
+        totalCandidates,
+        totalSubmissions
+      });
+
+    } catch (err) {
+
+      console.log(err);
+
+      res.status(500).json({
+        success: false
+      });
+
+    }
+
+  }
+);
+
+app.use("/api", companyRoutes);
+app.use("/api", companyAuthRoutes);
 
 /* ======================================================
    SERVER

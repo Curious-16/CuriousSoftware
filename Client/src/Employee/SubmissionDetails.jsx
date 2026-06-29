@@ -54,100 +54,301 @@ export default function SubmissionDetails() {
   });
 
   // =====================================================
-  // LOAD PREVIOUS SUBMISSION DATA
-  // =====================================================
-  useEffect(() => {
-    if (!candidate?._id) return;
-    loadPreviousSubmission();
-  }, [candidate]);
+// LOAD PREVIOUS SUBMISSION DATA
+// =====================================================
 
-  const loadPreviousSubmission = async () => {
-    try {
-      const res = await axios.get(
-       `${API.CANDIDATE}/submission-details/${candidate._id}`
-      );
+useEffect(() => {
 
-      if (res.data) {
-        setFormData({
-          candidateId: candidate._id,
-          candidateName: res.data.candidateName || "",
+  if (!candidate) {
 
-          employeeId: res.data.employeeId || safeEmployeeId,
-          employeeName: res.data.employeeName || safeEmployeeName,
+    alert("Candidate not found");
 
-          appliedDate: res.data.appliedDate || currentDate,
-          submission: res.data.submission || "",
-          jobTitle: res.data.jobTitle || "",
-          implementationPartner: res.data.implementationPartner || "",
-          rate: res.data.rate || "",
-          location: res.data.location || "",
-          vendor: res.data.vendor || "",
-          recruiter: res.data.recruiter || "",
-          phone: res.data.phone || "",
-          ext: res.data.ext || "",
-          email: res.data.email || "",
-          interviewType: res.data.interviewType || "",
-          timing: res.data.timing || currentTime,
-        });
+    navigate("/candidate-dashboard");
 
-        console.log("✅ Previous Submission Loaded");
-      }
+    return;
 
-    } catch (err) {
-      console.log("ℹ️ No Previous Submission Found");
+  }
+
+  loadPreviousSubmission();
+
+}, [candidate]);
+
+// =====================================================
+// LOAD PREVIOUS SUBMISSION
+// =====================================================
+
+const loadPreviousSubmission = async () => {
+
+  try {
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+
+      navigate("/employeeslogin");
+
+      return;
+
     }
-  };
 
-  // ================= HANDLE CHANGE =================
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+    const res = await axios.get(
 
-  // ================= SUBMIT =================
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+      `${API.CANDIDATE}/submission-details/${candidate._id}`,
 
-    try {
+      {
 
-      // ================= FINAL SAFETY CHECK =================
-      const finalPayload = {
-        ...formData,
-        employeeId: formData.employeeId?.toUpperCase().trim(),
-        employeeName: formData.employeeName,
-      };
+        headers: {
 
-      if (!finalPayload.employeeId) {
-        alert("Employee ID missing. Please login again.");
-        navigate("/");
-        return;
+          Authorization: `Bearer ${token}`,
+
+        },
+
       }
 
-      const res = await axios.post(
-        `${API.CANDIDATE}/submission-details`,
-        finalPayload
-      );
+    );
 
-      alert("Submission Details Saved Successfully");
+    if (res.data.success) {
+
+      const submission = res.data.data;
+
+      setFormData((prev) => ({
+
+        ...prev,
+
+        candidateId: candidate._id,
+
+        candidateName: candidate.fullName,
+
+        employeeId:
+          submission.employeeId || safeEmployeeId,
+
+        employeeName:
+          submission.employeeName || safeEmployeeName,
+
+        appliedDate:
+          submission.appliedDate || currentDate,
+
+        submission:
+          submission.submission || "",
+
+        jobTitle:
+          submission.jobTitle || "",
+
+        implementationPartner:
+          submission.implementationPartner || "",
+
+        rate:
+          submission.rate || "",
+
+        location:
+          submission.location || "",
+
+        vendor:
+          submission.vendor || "",
+
+        recruiter:
+          submission.recruiter || "",
+
+        phone:
+          submission.phone || "",
+
+        ext:
+          submission.ext || "",
+
+        email:
+          submission.email || "",
+
+        interviewType:
+          submission.interviewType || "",
+
+        timing:
+          submission.timing || currentTime,
+
+      }));
+
+      console.log("✅ Previous Submission Loaded");
+
+    }
+
+  }
+
+  catch (err) {
+
+    if (err.response?.status === 404) {
+
+      console.log("No Previous Submission Found");
+
+      return;
+
+    }
+
+    if (err.response?.status === 401) {
+
+      alert("Session Expired");
+
+      localStorage.removeItem("token");
+
+      navigate("/employeeslogin");
+
+      return;
+
+    }
+
+    console.log("Submission Load Error:", err);
+
+  }
+
+};
+  // =====================================================
+// SUBMIT FORM
+// =====================================================
+
+const handleSubmit = async (e) => {
+
+  e.preventDefault();
+
+  try {
+
+    if (!candidate?._id) {
+
+      alert("Candidate not found.");
+
+      return;
+
+    }
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+
+      alert("Login expired.");
+
+      navigate("/employeeslogin");
+
+      return;
+
+    }
+
+    if (!formData.employeeId) {
+
+      alert("Employee ID missing.");
+
+      return;
+
+    }
+
+    const payload = {
+
+      ...formData,
+
+      candidateId: candidate._id,
+
+      candidateName: candidate.fullName,
+
+      employeeId: formData.employeeId
+        ?.toUpperCase()
+        .trim(),
+
+      employeeName: formData.employeeName
+
+    };
+
+    console.log("📤 SUBMISSION PAYLOAD:", payload);
+
+    const res = await axios.post(
+
+      `${API.CANDIDATE}/submission-details`,
+
+      payload,
+
+      {
+
+        headers: {
+
+          Authorization: `Bearer ${token}`
+
+        }
+
+      }
+
+    );
+
+    console.log("✅ SERVER RESPONSE:", res.data);
+
+    if (res.data.success) {
+
+      alert("Submission Saved Successfully");
 
       navigate("/submission-view", {
+
         state: {
-          submission: res.data.data,
-        },
+
+          submission: res.data.data
+
+        }
+
       });
 
-    } catch (err) {
-      console.log(err);
-      alert("Failed To Save");
-    }
-  };
+    } else {
 
+      alert(res.data.message || "Unable to save submission.");
+
+    }
+
+  }
+
+  catch (err) {
+
+    console.log("❌ Submission Error:", err);
+
+    if (err.response?.status === 401) {
+
+      alert("Session expired. Please login again.");
+
+      localStorage.removeItem("token");
+
+      navigate("/employeeslogin");
+
+      return;
+
+    }
+
+    if (err.response?.status === 404) {
+
+      alert("API Route Not Found.");
+
+      return;
+
+    }
+
+    alert(
+
+      err.response?.data?.message ||
+
+      "Failed To Save Submission"
+
+    );
+
+  }
+
+};
+
+const handleChange = (e) => {
+
+  setFormData((prev) => ({
+
+    ...prev,
+
+    [e.target.name]: e.target.value
+
+  }));
+
+};
   return (
     <div className="submission-container">
 
       <button
+        type="button"
         className="back-btn"
         onClick={() => navigate(-1)}
       >

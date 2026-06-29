@@ -102,56 +102,58 @@ export default function CandidateDashboard() {
 
   useEffect(() => {
 
-    if (
-      !employee?.employeeId
-    ) {
+  if (!employee?.employeeId) {
+    return;
+  }
 
-      return;
+  loadAssigned();
 
+}, [employee]);
+
+const loadAssigned = async () => {
+
+  try {
+
+    setLoading(true);
+
+    const token = localStorage.getItem("token");
+
+    console.log(
+  "TOKEN SENT:",
+  localStorage.getItem("token")
+);
+
+const res = await axios.get(
+  `${API.CANDIDATE}/assigned/${employee.employeeId}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`
     }
+  }
+);
 
-    loadAssigned();
+    console.log(
+      "✅ Assigned Candidates:",
+      res.data
+    );
 
-  }, [employee]);
+    setData(res.data);
+    setFilteredData(res.data);
 
-  const loadAssigned =
-    async () => {
+  } catch (err) {
 
-      try {
+    console.log(
+      "❌ Load Error:",
+      err.response?.data || err
+    );
 
-        setLoading(true);
+  } finally {
 
-        const res =
-          await axios.get(
-            `${API.CANDIDATE}/assigned/${employee.employeeId}`
-          );
+    setLoading(false);
 
-        console.log(
-          "✅ Assigned Candidates :",
-          res.data
-        );
+  }
 
-        setData(res.data);
-
-        setFilteredData(
-          res.data
-        );
-
-      } catch (err) {
-
-        console.log(
-          "❌ Load Error :",
-          err
-        );
-
-      } finally {
-
-        setLoading(false);
-
-      }
-
-    };
-
+};
   // ================= SEARCH FILTER =================
 
   useEffect(() => {
@@ -226,14 +228,26 @@ export default function CandidateDashboard() {
 
         // ================= API UPDATE =================
 
-        await axios.put(
-          `${API.CANDIDATE}/update-working-status/${candidateId}`,
-          {
-            workingStatus:
-              newStatus,
-          }
-        );
+      const handleWorkingStatusChange = async (
+    candidateId,
+    status
+) => {
 
+    const token=localStorage.getItem("token");
+
+await axios.put(
+`${API.CANDIDATE}/update-working-status/${candidateId}`,
+{
+workingStatus:value
+},
+{
+headers:{
+Authorization:`Bearer ${token}`
+}
+}
+)
+
+};
         console.log(
           "✅ Working Status Updated"
         );
@@ -599,36 +613,24 @@ const openAnalysisPage = () => {
 
                     <td>
 
-                      <select
-                        className="status-dropdown"
-                        value={
-                          item.workingStatus ||
-                          "Marketing"
-                        }
-                        onChange={(e) =>
-                          handleWorkingStatusChange(
-                            item._id,
-                            e.target.value
-                          )
-                        }
-                      >
-
-                        {workingStatusOptions.map(
-                          (status, index) => (
-
-                            <option
-                              key={index}
-                              value={status}
-                            >
-
-                              {status}
-
-                            </option>
-
-                          )
-                        )}
-
-                      </select>
+                     <select
+  value={item.workingStatus || ""}
+  onChange={(e) =>
+    handleWorkingStatusChange(
+      item._id,
+      e.target.value
+    )
+  }
+>
+  {workingStatusOptions.map((status, index) => (
+    <option
+      key={index}
+      value={status}
+    >
+      {status}
+    </option>
+  ))}
+</select>
 
                     </td>
 

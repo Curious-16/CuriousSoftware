@@ -34,47 +34,56 @@ const SubmissionSuccess = () => {
   // ================= LOAD EMPLOYEES =================
   useEffect(() => {
 
-    const fetchEmployees =
-      async () => {
+  const fetchEmployees = async () => {
 
-        try {
+    try {
 
-          const res =
-            await axios.get(
-              `${API.ADMIN}/employees`
-            );
+      const token =
+        localStorage.getItem("token");
 
-          const activeEmployees =
-            res.data.filter(
-              (emp) =>
-                emp.activated === true &&
-                emp.status === "active"
-            );
-
-          console.log(
-            "✅ Employees :",
-            activeEmployees
-          );
-
-          setEmployees(
-            activeEmployees
-          );
-
-        } catch (err) {
-
-          console.log(
-            "❌ Employee Fetch Error :",
-            err
-          );
-
+      const res = await axios.get(
+        `${API.ADMIN}/employees`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
+      );
 
-      };
+      console.log(
+        "EMPLOYEE API RESPONSE:",
+        res.data
+      );
 
-    fetchEmployees();
+      const employeeList =
+        Array.isArray(res.data)
+          ? res.data
+          : res.data.employees || [];
 
-  }, []);
+      const activeEmployees =
+        employeeList.filter(
+          (emp) =>
+            emp.activated === true
+        );
 
+      setEmployees(
+        activeEmployees
+      );
+
+    } catch (err) {
+
+      console.log(
+        "❌ Employee Fetch Error:",
+        err.response?.data || err
+      );
+
+    }
+
+  };
+
+  fetchEmployees();
+
+}, []);
   // ================= ASSIGN =================
   const handleSend =
     async () => {
@@ -117,14 +126,17 @@ const SubmissionSuccess = () => {
         );
 
         // 🔥 FIXED URL
-        const res =
-          await axios.post(
+       const token = localStorage.getItem("token");
 
-            `${API.CANDIDATE}/assign-candidate/${data._id}`,
-
-            payload
-
-          );
+const res = await axios.post(
+  `${API.CANDIDATE}/assign-candidate/${data._id}`,
+  payload,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
+);
 
         console.log(
           "✅ Assigned :",

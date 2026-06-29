@@ -15,36 +15,51 @@ function AdminDashboard() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const token = localStorage.getItem("token");
+
+const authConfig = {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+};
+
   // ================= LOAD EMPLOYEES =================
 
-  const loadEmployees = async () => {
+ const loadEmployees = async () => {
+  try {
 
-    try {
+    const res = await axios.get(
+      `${API.ADMIN}/employees`,
+      authConfig
+    );
 
-      const res = await axios.get(
-        `${API.ADMIN}/employees`
-      );
+    console.log("EMPLOYEE RESPONSE:", res.data);
 
-      setEmployees(res.data);
+    setEmployees(
+      res.data.employees || []
+    );
 
-    } catch (err) {
+  } catch (err) {
 
-      console.log(err);
+    console.log(
+      "LOAD EMPLOYEE ERROR:",
+      err
+    );
 
-    }
+    setEmployees([]);
 
-  };
-
+  }
+};
   // ================= LOAD LOGIN STATUS =================
 
   const loadLoginStatus = async () => {
 
     try {
 
-      const res = await axios.get(
-                `${API.ADMIN}/today-login-status`
-      );
-
+     const res = await axios.get(
+  `${API.ADMIN}/today-login-status`,
+  authConfig
+);
       setLoginStatus(res.data);
 
     } catch (err) {
@@ -71,13 +86,14 @@ function AdminDashboard() {
     try {
 
       const res = await axios.post(
-                `${API.ADMIN}/invite`,
-        {
-          email: emp.email,
-          employeeId: emp.employeeId,
-          firstName: emp.firstName,
-        }
-      );
+  `${API.ADMIN}/invite`,
+  {
+    email: emp.email,
+    employeeId: emp.employeeId,
+    firstName: emp.firstName,
+  },
+  authConfig
+);
 
       alert(res.data.message);
 
@@ -96,8 +112,10 @@ function AdminDashboard() {
     try {
 
       await axios.put(
-                `${API.ADMIN}/toggle-status/${id}`
-      );
+  `${API.ADMIN}/toggle-status/${id}`,
+  {},
+  authConfig
+);
 
       loadEmployees();
 
@@ -111,19 +129,38 @@ function AdminDashboard() {
 
   // ================= STATS =================
 
-  const total = employees.length;
+ const employeeList = Array.isArray(employees)
+  ? employees
+  : [];
 
-  const active = employees.filter(
-    (e) => e.status === "active"
-  ).length;
+const total = employeeList.length;
 
-  const inactive = employees.filter(
-    (e) => e.status !== "active"
-  ).length;
+const active = employeeList.filter(
+  (e) => e.status === "active"
+).length;
 
-  const pending = employees.filter(
-    (e) => !e.activated
-  ).length;
+const inactive = employeeList.filter(
+  (e) => e.status !== "active"
+).length;
+
+const pending = employeeList.filter(
+  (e) => !e.activated
+).length;
+
+console.log(
+  "EMPLOYEES STATE:",
+  employees
+);
+
+console.log(
+  "EMPLOYEE LIST:",
+  employeeList
+);
+
+console.log(
+  "TOTAL:",
+  total
+);
 
   // ================= BAR CHART =================
 
@@ -360,163 +397,131 @@ function AdminDashboard() {
 
             <tbody>
 
-              {employees.map((emp) => (
+  {employeeList.map((emp) => {
 
-                <tr key={emp._id}>
+    console.log("ROW:", emp);
 
-                  <td>{emp.employeeId}</td>
+    return (
 
-                  <td>
-                    {emp.firstName}{" "}
-                    {emp.lastName}
-                  </td>
+      <tr key={emp._id}>
 
-                  <td>{emp.email}</td>
+        <td>{emp.employeeId}</td>
 
-                  {/* Activation */}
+        <td>
+          {emp.firstName} {emp.lastName}
+        </td>
 
-                  <td>
+        <td>{emp.email}</td>
 
-                    {emp.activated ? (
+        {/* Activation */}
 
-                      <span className="status-active">
-                        Activated
-                      </span>
+        <td>
 
-                    ) : (
+          {emp.activated ? (
 
-                      <span className="status-pending">
-                        Pending
-                      </span>
+            <span className="status-active">
+              Activated
+            </span>
 
-                    )}
+          ) : (
 
-                  </td>
+            <span className="status-pending">
+              Pending
+            </span>
 
-                  {/* Login Status */}
+          )}
 
-                  <td>
+        </td>
 
-                    {loginStatus[
-                      emp.employeeId
-                    ] === "Online" ? (
+        {/* Login Status */}
 
-                      <span className="login-online">
-                        🟢 Logged In
-                      </span>
+        <td>
 
-                    ) : (
+          {loginStatus?.[emp.employeeId] === "Online" ? (
 
-                      <span className="login-offline">
-                        🔴 Not Logged In
-                      </span>
+            <span className="login-online">
+              🟢 Logged In
+            </span>
 
-                    )}
+          ) : (
 
-                  </td>
+            <span className="login-offline">
+              🔴 Not Logged In
+            </span>
 
-                  {/* Employee Status */}
+          )}
 
-                  {/* <td>
+        </td>
 
-                    {emp.status ===
-                    "active" ? (
+        {/* Actions */}
 
-                      <span className="status-active">
-                        Active
-                      </span>
+        <td className="actions">
 
-                    ) : (
+          <div className="menu-wrapper">
 
-                      <span className="status-inactive">
-                        Inactive
-                      </span>
+            <button
+              className="three-dot-btn"
+              onClick={() =>
+                setOpenMenu(
+                  openMenu === emp._id
+                    ? null
+                    : emp._id
+                )
+              }
+            >
+              ⋮
+            </button>
 
-                    )}
+            {openMenu === emp._id && (
 
-                  </td> */}
+              <div className="dropdown-menu">
 
-                  {/* Actions */}
+                <button
+                  onClick={() => {
+                    handleInvite(emp);
+                    setOpenMenu(null);
+                  }}
+                >
+                  📧 Invite
+                </button>
 
-                  <td className="actions">
+                <button
+                  onClick={() => {
+                    navigate(
+                      `/edit/${emp._id}`
+                    );
+                    setOpenMenu(null);
+                  }}
+                >
+                  ✏️ Edit
+                </button>
 
-                    <div className="menu-wrapper">
+                <button
+                  onClick={() => {
+                    toggleStatus(emp._id);
+                    setOpenMenu(null);
+                  }}
+                >
+                  {emp.status === "active"
+                    ? "🚫 Deactivate"
+                    : "✅ Activate"}
+                </button>
 
-                      <button
-                        className="three-dot-btn"
-                        onClick={() =>
-                          setOpenMenu(
-                            openMenu ===
-                              emp._id
-                              ? null
-                              : emp._id
-                          )
-                        }
-                      >
-                        ⋮
-                      </button>
+              </div>
 
-                      {openMenu ===
-                        emp._id && (
+            )}
 
-                        <div className="dropdown-menu">
+          </div>
 
-                          <button
-                            onClick={() => {
-                              handleInvite(
-                                emp
-                              );
-                              setOpenMenu(
-                                null
-                              );
-                            }}
-                          >
-                            📧 Invite
-                          </button>
+        </td>
 
-                          <button
-                            onClick={() => {
-                              navigate(
-                                `/edit/${emp._id}`
-                              );
-                              setOpenMenu(
-                                null
-                              );
-                            }}
-                          >
-                            ✏️ Edit
-                          </button>
+      </tr>
 
-                          <button
-                            onClick={() => {
-                              toggleStatus(
-                                emp._id
-                              );
-                              setOpenMenu(
-                                null
-                              );
-                            }}
-                          >
-                            {emp.status ===
-                            "active"
-                              ? "🚫 Deactivate"
-                              : "✅ Activate"}
-                          </button>
+    );
 
-                        </div>
+  })}
 
-                      )}
-
-                    </div>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </tbody>
-
+</tbody>
           </table>
 
         </div>

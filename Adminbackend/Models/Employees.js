@@ -2,11 +2,17 @@ import mongoose from "mongoose";
 
 const employeeSchema = new mongoose.Schema(
   {
+    // Multi-Tenant Company Reference
+   companyId: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "companies",
+  required: true
+},
+
     employeeId: {
       type: String,
       required: true,
-      unique: true,       // 🔥 ensures no duplicate EMP IDs
-      uppercase: true,    // 🔥 auto converts to EMP001 format
+      uppercase: true,
       trim: true
     },
 
@@ -24,7 +30,6 @@ const employeeSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,       // 🔥 prevents duplicate emails
       lowercase: true,
       trim: true
     },
@@ -49,15 +54,15 @@ const employeeSchema = new mongoose.Schema(
       default: 0
     },
 
-    // 🔐 AUTH FIELDS
+    // Authentication
     password: {
       type: String,
-      default: null       // no password until signup
+      default: null
     },
 
     activated: {
       type: Boolean,
-      default: false      // becomes true after signup
+      default: false
     },
 
     signupDate: {
@@ -66,10 +71,35 @@ const employeeSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true      // 🔥 adds createdAt & updatedAt automatically
+    timestamps: true
   }
 );
 
-const Employee = mongoose.model("inneremployees", employeeSchema);
+// Employee ID unique inside a company
+employeeSchema.index(
+  {
+    companyId: 1,
+    employeeId: 1
+  },
+  {
+    unique: true
+  }
+);
+
+// Email unique inside a company
+employeeSchema.index(
+  {
+    companyId: 1,
+    email: 1
+  },
+  {
+    unique: true
+  }
+);
+
+const Employee = mongoose.model(
+  "inneremployees",
+  employeeSchema
+);
 
 export default Employee;

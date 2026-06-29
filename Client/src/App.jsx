@@ -20,19 +20,21 @@ import SubmissionDetails from "./Employee/SubmissionDetails";
 import SubmissionView from "./Employee/SubmissionView";
 import AnalysisEmp from "./Employee/AnalysisEmp";
 import ReferenceAnalysis from "./Employee/ReferenceAnalysis";
+import CompanyLogin from "./pages/CompanyLogin";
 
 function App() {
   return (
     <BrowserRouter>
      
       <Routes>
-         <Route path="/" element={<Home />} />
+          <Route path="/" element={<CompanyLogin />}/>
+         <Route path="/company-home" element={<Home />} />
          
          <Route path="/contact" element={<Contact />} />
         <Route path="/admin/queries" element={<AdminQueries />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/dashboard" element={<AdminDashboard />} />
-        <Route path="/signup/:employeeId" element={<Signup />} />
+        <Route path="/signup/:employeeId/:companyCode"element={<Signup />}/>
         <Route path="/edit/:id" element={<EditEmployee />} />
         <Route path="/add" element={<NewEmployeeForm />} />
         <Route path="/employeeslogin" element={<EmployeesLogin />} />
@@ -45,6 +47,7 @@ function App() {
         <Route path="/submission-view"element={<SubmissionView />}/>
         <Route path="/analysis-emp" element={<AnalysisEmp />}/>
         <Route path="/reference-analysis/:referenceNumber" element={<ReferenceAnalysis />}/>
+       
         
       </Routes>
     </BrowserRouter>

@@ -15,6 +15,7 @@ import {
   FaSave,
 } from "react-icons/fa";
 
+
 import "./NewEmployeeForm.css";
 
 function NewEmployeeForm() {
@@ -41,28 +42,64 @@ function NewEmployeeForm() {
       [e.target.name]: e.target.value,
     });
   };
+const handleSubmit = async () => {
 
-  const handleSubmit = async () => {
+  try {
 
-    try {
+    const token =
+      localStorage.getItem("token");
 
-      const res = await axios.post(
-        `${API.ADMIN}/add-employee`,
-        form
-      );
+    console.log(
+      "TOKEN:",
+      token
+    );
 
-      alert(res.data.message);
+    console.log(
+      "FORM DATA:",
+      form
+    );
 
-      navigate("/dashboard");
+    
 
-    } catch (err) {
+    const res = await axios.post(
 
-      alert(
-        err.response?.data?.message ||
-        "Something went wrong"
-      );
-    }
-  };
+      `${API.ADMIN}/add-employee`,
+
+      form,
+
+      {
+        headers: {
+          Authorization:
+            `Bearer ${token}`
+        }
+      }
+
+    );
+
+    console.log(
+      "ADD EMPLOYEE RESPONSE:",
+      res.data
+    );
+
+    alert(res.data.message);
+
+    navigate("/dashboard");
+
+  } catch (err) {
+
+    console.log(
+      "ADD EMPLOYEE ERROR:",
+      err.response?.data
+    );
+
+    alert(
+      err.response?.data?.message ||
+      "Something went wrong"
+    );
+
+  }
+
+};
 
   return (
 
@@ -386,7 +423,8 @@ function NewEmployeeForm() {
             className="save-btn"
             onClick={handleSubmit}
           >
-            <FaSave />
+            
+            <FaSave  />
             Save Employee
           </button>
 
